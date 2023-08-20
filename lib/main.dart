@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:weather_app/screens/screens.dart';
 import 'package:weather_app/theme/app_theme.dart';
 

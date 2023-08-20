@@ -3,55 +3,54 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:weather_app/theme/app_theme.dart';
 
-class CurrentWeather extends StatelessWidget {
+class CurrentLocationWeather extends StatelessWidget {
 
   final int temp;
   final int tempMax;
   final int tempMin;
-  final String location;
   final String country;
-  final String weather;
+  final String location;
+  final String weatherDescription;
 
-  const CurrentWeather({
+  const CurrentLocationWeather({
     super.key, 
+    required this.country, 
+    required this.location, 
     required this.temp, 
     required this.tempMax, 
     required this.tempMin, 
-    required this.location, 
-    required this.country, 
-    required this.weather,
+    required this.weatherDescription,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _DataWeather(temp: temp, tempMax: tempMax, tempMin: tempMin),
-        _Location(location: location, country: country, weather: weather),
+        _WeatherData(temp: temp, tempMax: tempMax, tempMin: tempMin),
+        _Location(location: location, country: country, weatherDescription: weatherDescription),
       ],
     );
   }
 }
 
-class _DataWeather extends StatelessWidget {
+class _WeatherData extends StatelessWidget {
 
   final int temp;
   final int tempMax;
   final int tempMin;
 
-  const _DataWeather({
+  const _WeatherData({
     required this.temp, 
     required this.tempMax, 
     required this.tempMin
   });
 
-  Widget _maxAndMinTemp(IconData? icon, String value, TextStyle style, String? temp) {
+  Widget _buildMaxAndMinTemp(IconData arrowIndicator, String temp, String tempIndicator) {
     return Row(
       children: [
-        if(icon != null)
-        Icon(icon, size: 30.sp, color: AppTheme.primaryTextColor.withOpacity(0.7)),
-        Text(value, style: style),
-        Text(temp ?? '', style: AppTheme.textSizeSmall),
+        Icon(arrowIndicator, size: 30.sp, color: AppTheme.primaryTextColor.withOpacity(0.7)),
+        Text(temp, style: AppTheme.textSizeNormal),
+        Text(tempIndicator, style: AppTheme.textSizeSmall),
       ],
     );
   }
@@ -65,44 +64,42 @@ class _DataWeather extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _maxAndMinTemp(null, '°c', AppTheme.textSizeLarge, null),
-            _maxAndMinTemp(Icons.arrow_drop_up_rounded, '$tempMax°', AppTheme.textSizeNormal, ' MAX'),
-            _maxAndMinTemp(Icons.arrow_drop_down_rounded, '$tempMin°', AppTheme.textSizeNormal, ' MIN'),
+            Text('°c', style: AppTheme.textSizeLarge),
+            _buildMaxAndMinTemp(Icons.arrow_drop_up_rounded, '$tempMax°', ' MAX'),
+            _buildMaxAndMinTemp(Icons.arrow_drop_down_rounded, '$tempMin°', ' MIN'),
           ],
         ),
       ],
     );
   }
+
 }
 
 class _Location extends StatelessWidget {
 
-  final String location;
   final String country;
-  final String weather;
+  final String location;
+  final String weatherDescription;
 
   const _Location({
-    required this.location, 
     required this.country, 
-    required this.weather
+    required this.location, 
+    required this.weatherDescription
   });
 
   @override
   Widget build(BuildContext context) {
+    final String locationDescription = '${location.toUpperCase()}, ${country.toUpperCase()}';
+
     return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('${location.toUpperCase()}, ', style: AppTheme.textSizeNormalBold),
-              Text(country.toUpperCase(), style: AppTheme.textSizeNormalBold),
-            ],
-          ),
-          Text(weather, style: AppTheme.textSizeNormal),
+          Text(locationDescription, style: AppTheme.textSizeNormalBold, textAlign: TextAlign.center),
+          Text(weatherDescription, style: AppTheme.textSizeNormal),
         ],
       ),
     );
   }
+
 }

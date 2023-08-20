@@ -67,9 +67,11 @@ class Mountains extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
   }
+  
 }
 
-class MountainWidget extends StatelessWidget {
+class MountainBackground extends StatelessWidget {
+  const MountainBackground({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +79,9 @@ class MountainWidget extends StatelessWidget {
       children: [
         Positioned(
           right: 20.w,
-          child: Icon(Icons.circle, size: 40.h, color: AppTheme.lightMountain1,),
+          child: Icon(Icons.circle, size: 40.h, color: AppTheme.lightMountain1),
         ),
-        Container(
-          //color: Colors.amber,
+        SizedBox(
           width: double.infinity,
           height: 300.h,
           child: ClipRRect(
