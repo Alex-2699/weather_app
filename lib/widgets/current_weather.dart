@@ -26,20 +26,21 @@ class CurrentLocationWeather extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _WeatherData(temp: temp, tempMax: tempMax, tempMin: tempMin),
+        _CurrentWeatherData(temp: temp, tempMax: tempMax, tempMin: tempMin),
         _Location(location: location, country: country, weatherDescription: weatherDescription),
       ],
     );
   }
+
 }
 
-class _WeatherData extends StatelessWidget {
+class _CurrentWeatherData extends StatelessWidget {
 
   final int temp;
   final int tempMax;
   final int tempMin;
 
-  const _WeatherData({
+  const _CurrentWeatherData({
     required this.temp, 
     required this.tempMax, 
     required this.tempMin
@@ -65,8 +66,8 @@ class _WeatherData extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('°c', style: AppTheme.textSizeLarge),
-            _buildMaxAndMinTemp(Icons.arrow_drop_up_rounded, '$tempMax°', ' MAX'),
-            _buildMaxAndMinTemp(Icons.arrow_drop_down_rounded, '$tempMin°', ' MIN'),
+            _buildMaxAndMinTemp(Icons.arrow_drop_up_rounded, '$tempMax° ', 'MAX'),
+            _buildMaxAndMinTemp(Icons.arrow_drop_down_rounded, '$tempMin° ', 'MIN'),
           ],
         ),
       ],

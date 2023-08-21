@@ -12,9 +12,7 @@ class GradientDecoration extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [
-            ...AppTheme.lightGradient
-          ],
+          colors: [...AppTheme.lightGradient],
         ),
       ),
     );

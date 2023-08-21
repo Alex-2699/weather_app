@@ -16,9 +16,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               const HeaderWeatherStatistics(
-                cloudiness: 66,
-                humidity: 55,
-                windSpeed: 2.72,
+                cloudinessPercent: 66,
+                humidityPercent: 55,
+                windSpeedPercent: 2.72,
               ),
               const CurrentLocationWeather(
                 temp: 32,
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                 location: 'San Juan Bautista Tuxtepec',
                 weatherDescription: 'Tormenta eléctrica',
               ),
-              _IconHeader(),
+              _IconCurrentWeather(),
             ],
           ),
         ),
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _IconHeader extends StatelessWidget {
+class _IconCurrentWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
