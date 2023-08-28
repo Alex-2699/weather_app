@@ -3,47 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:weather_app/theme/app_theme.dart';
 
-class CurrentLocationWeather extends StatelessWidget {
+class CurrentWeather extends StatelessWidget {
 
   final int temp;
   final int tempMax;
   final int tempMin;
-  final String country;
-  final String location;
-  final String weatherDescription;
 
-  const CurrentLocationWeather({
+  const CurrentWeather({
     super.key, 
-    required this.country, 
-    required this.location, 
     required this.temp, 
     required this.tempMax, 
-    required this.tempMin, 
-    required this.weatherDescription,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        _CurrentWeatherData(temp: temp, tempMax: tempMax, tempMin: tempMin),
-        _Location(location: location, country: country, weatherDescription: weatherDescription),
-      ],
-    );
-  }
-
-}
-
-class _CurrentWeatherData extends StatelessWidget {
-
-  final int temp;
-  final int tempMax;
-  final int tempMin;
-
-  const _CurrentWeatherData({
-    required this.temp, 
-    required this.tempMax, 
-    required this.tempMin
+    required this.tempMin,
   });
 
   Widget _buildMaxAndMinTemp(IconData arrowIndicator, String temp, String tempIndicator) {
@@ -71,35 +41,6 @@ class _CurrentWeatherData extends StatelessWidget {
           ],
         ),
       ],
-    );
-  }
-
-}
-
-class _Location extends StatelessWidget {
-
-  final String country;
-  final String location;
-  final String weatherDescription;
-
-  const _Location({
-    required this.country, 
-    required this.location, 
-    required this.weatherDescription
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final String locationDescription = '${location.toUpperCase()}, ${country.toUpperCase()}';
-
-    return SizedBox(
-      width: double.infinity,
-      child: Column(
-        children: [
-          Text(locationDescription, style: AppTheme.textSizeNormalBold, textAlign: TextAlign.center),
-          Text(weatherDescription, style: AppTheme.textSizeNormal),
-        ],
-      ),
     );
   }
 

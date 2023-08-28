@@ -40,4 +40,5 @@ class HeaderWeatherStatistics extends StatelessWidget {
       ),
     );
   }
+
 }

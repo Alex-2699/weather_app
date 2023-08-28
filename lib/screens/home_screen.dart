@@ -1,13 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/models/models.dart';
 
-import 'package:weather_app/theme/app_theme.dart';
+import 'package:weather_app/providers/weather_provider.dart';
+import 'package:weather_app/resources/weather_data.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  Widget _buildScreen() {
+  Widget _buildScreen(WeatherResponse weather) {
     return Stack(
       children: [
         const GradientDecoration(),
@@ -15,20 +18,21 @@ class HomeScreen extends StatelessWidget {
         SafeArea(
           child: Column(
             children: [
-              const HeaderWeatherStatistics(
-                cloudinessPercent: 66,
-                humidityPercent: 55,
-                windSpeedPercent: 2.72,
+              HeaderWeatherStatistics(
+                cloudinessPercent: weather.hourly.currentcloudiness,
+                humidityPercent: weather.hourly.currentPrecipitation,
+                windSpeedPercent: weather.hourly.currentwindSpeed,
               ),
-              const CurrentLocationWeather(
-                temp: 32,
-                tempMax: 36,
-                tempMin: 24,
+              CurrentWeather(
+                temp: weather.currentWeather.temperature.toInt(),
+                tempMax: weather.daily.tempMax.toInt(),
+                tempMin: weather.daily.tempMin.toInt(),
+              ),
+              LocationWeather(
+                location: 'san juan bautista tuxtepec',
                 country: 'mx',
-                location: 'San Juan Bautista Tuxtepec',
-                weatherDescription: 'Tormenta eléctrica',
+                weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
-              _IconCurrentWeather(),
             ],
           ),
         ),
@@ -38,19 +42,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final weatherProvider = Provider.of<WeatherProvider>(context);
+
     return Scaffold(
-      body: _buildScreen(),
+      body: FutureBuilder(
+        future: weatherProvider.getCurrentWeather(18.1074, -96.1457),
+        builder: (_, AsyncSnapshot<WeatherResponse> snapshot) {
+          if(!snapshot.hasData) return const Center(child: CupertinoActivityIndicator());
+          
+          return _buildScreen(snapshot.data!);
+        }
+      ),
     );
   }
-}
 
-class _IconCurrentWeather extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 40.h),
-      child: Icon(Icons.cloud_queue_rounded, size: 120.h, color: AppTheme.primaryTextColor)
-    );
-  }
 }
