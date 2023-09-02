@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/models/models.dart';
 
 import 'package:weather_app/providers/weather_provider.dart';
-import 'package:weather_app/resources/weather_data.dart';
+import 'package:weather_app/utils/weather_data.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {

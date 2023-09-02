@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
-import 'package:weather_app/providers/weather_provider.dart';
 
+import 'package:provider/provider.dart';
+
+import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/screens/screens.dart';
 import 'package:weather_app/theme/app_theme.dart';
 
@@ -15,7 +16,8 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => WeatherProvider())
+        ChangeNotifierProvider(create: (_) => WeatherProvider()),
+        ChangeNotifierProvider(create: (_) => LocationSearchProvider())
       ],
       child: const MyApp(),
     );
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );  
       },
-      child: const HomeScreen(),
+      child: const SearchLocation(),
     );
   }
 }
