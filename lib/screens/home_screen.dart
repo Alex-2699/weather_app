@@ -48,6 +48,8 @@ class HomeScreen extends StatelessWidget {
       body: FutureBuilder(
         future: weatherProvider.getCurrentWeather(18.1074, -96.1457),
         builder: (_, AsyncSnapshot<WeatherResponse> snapshot) {
+          if(snapshot.hasError) return Center(child: Text('${snapshot.error}'));
+
           if(!snapshot.hasData) return const Center(child: CupertinoActivityIndicator());
           
           return _buildScreen(snapshot.data!);
@@ -55,5 +57,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
 }
