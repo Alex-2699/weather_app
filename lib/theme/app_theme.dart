@@ -4,13 +4,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
 
-  static const lightPrimary = Color.fromRGBO(141,209,217, 1);
-  static const lightSecondary = Color.fromRGBO(120,199,209,1);
+  static const lightPrimary = Color.fromRGBO(141, 209, 217, 1);
+  static const lightSecondary = Color.fromRGBO(120, 199, 209,1);
 
-  static const darkPrimary = Color.fromRGBO(96,103,117, 1);
-  static const darkSecondary = Color.fromRGBO(61,67,83,1);
+  static const darkPrimary = Color.fromRGBO(96, 103, 117, 1);
+  static const darkSecondary = Color.fromRGBO(61, 67, 83,1);
 
   static const primaryTextColor = Colors.white;
+
+  static const lightGray = Color.fromRGBO(245, 245, 245, 1);
+  static const mediumGray = Color.fromRGBO(236, 236, 236, 1);
+  static const darkGray = Color.fromRGBO(88, 88, 88, 1);
+  static const deepGray = Color.fromRGBO(37, 37, 37, 1);
 
   static const lightMountain1 = Color.fromRGBO(158, 217, 225, 1);
   static const lightMountain2 = Color.fromRGBO(124, 195, 204, 1);

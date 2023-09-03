@@ -1,44 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:weather_app/providers/providers.dart';
+import 'package:weather_app/widgets/widgets.dart';
 
 class SearchLocation extends StatelessWidget {
   const SearchLocation({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final searchProvider = Provider.of<LocationSearchProvider>(context,);
+    final searchProvider = Provider.of<LocationSearchProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Búsqueda en Flutter con Provider'),
-      ),
-      body: Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: TextField(
-              onChanged: (value) => searchProvider.getPlaceSuggestions(value),
-              decoration: InputDecoration(
-                labelText: 'Buscar',
-                hintText: 'Ingrese su búsqueda',
-                prefixIcon: Icon(Icons.search),
+      appBar: const AppBarCustom(title: 'Buscar ciudad'),
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+          child: Column(
+            children: [
+              InputText(
+                prefixIcon: Icons.search_rounded, 
+                onChange:(locationName) => searchProvider.getPlaceSuggestions(locationName),
               ),
-            ),
+              Divider(height: 30.h, thickness: 1),
+              _BuildSuggestions(),
+            ],
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: searchProvider.suggestions.predictions.length,
-              itemBuilder: (_, i) {
-                return ListTile(
-                  title: Text(searchProvider.suggestions.predictions[i].description),
-                );
-              },
-            ),
-          ),
-        ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BuildSuggestions extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final searchProvider = Provider.of<LocationSearchProvider>(context);
+
+    return Expanded(
+      child: ListView.separated(
+        itemCount: searchProvider.placeSuggestions.predictions.length,
+        itemBuilder: (_, i) => SuggestionItem(description: searchProvider.placeSuggestions.predictions[i].description),
+        separatorBuilder: (context, index) => const Divider(),
       ),
     );
   }
