@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:provider/provider.dart';
+import 'package:weather_app/models/models.dart';
 
 import 'package:weather_app/providers/providers.dart';
+import 'package:weather_app/screens/home_screen.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class SearchLocation extends StatelessWidget {
@@ -36,6 +38,30 @@ class SearchLocation extends StatelessWidget {
 
 class _BuildSuggestions extends StatelessWidget {
 
+  void onTapLocation(BuildContext context, Prediction prediction) async {
+    final searchProvider = Provider.of<LocationSearchProvider>(context, listen: false);
+
+    try {
+      await searchProvider.getLocationCoordinates(prediction.placeId);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(
+            locationName: prediction.description,
+            latitude: searchProvider.coordinates.result.geometry.location.lat, 
+            longitude: searchProvider.coordinates.result.geometry.location.lng,
+          ),
+        ),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $error'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final searchProvider = Provider.of<LocationSearchProvider>(context);
@@ -43,7 +69,12 @@ class _BuildSuggestions extends StatelessWidget {
     return Expanded(
       child: ListView.separated(
         itemCount: searchProvider.placeSuggestions.predictions.length,
-        itemBuilder: (_, i) => SuggestionItem(description: searchProvider.placeSuggestions.predictions[i].description),
+        itemBuilder: (_, i) {
+          return SuggestionItem(
+            description: searchProvider.placeSuggestions.predictions[i].description,
+            onTap:() => onTapLocation(context, searchProvider.placeSuggestions.predictions[i]),
+          );
+        },
         separatorBuilder: (context, index) => const Divider(),
       ),
     );

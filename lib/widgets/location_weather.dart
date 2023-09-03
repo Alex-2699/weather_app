@@ -5,20 +5,18 @@ import 'package:weather_app/theme/app_theme.dart';
 
 class LocationWeather extends StatelessWidget {
 
-  final String country;
   final String location;
   final String weatherDescription;
 
   const LocationWeather({
     super.key, 
-    required this.country, 
     required this.location, 
     required this.weatherDescription
   });
 
   @override
   Widget build(BuildContext context) {
-    final String locationDescription = '${location.toUpperCase()}, ${country.toUpperCase()}';
+    final String locationDescription = location.toUpperCase();
 
     return SizedBox(
       width: double.infinity,

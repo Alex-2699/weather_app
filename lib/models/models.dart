@@ -9,3 +9,9 @@ export 'package:weather_app/models/place_suggestions/structured_formatting.dart'
 export 'package:weather_app/models/place_suggestions/suggestions_response.dart';
 export 'package:weather_app/models/place_suggestions/term.dart';
 export 'package:weather_app/models/place_suggestions/type.dart';
+
+export 'package:weather_app/models/location_coordinates/coordinates_response.dart';
+export 'package:weather_app/models/location_coordinates/geometry.dart';
+export 'package:weather_app/models/location_coordinates/location.dart';
+export 'package:weather_app/models/location_coordinates/response.dart';
+export 'package:weather_app/models/location_coordinates/viewport.dart';

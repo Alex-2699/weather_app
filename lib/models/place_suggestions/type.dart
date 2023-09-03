@@ -1,6 +1,9 @@
 enum Type {
+  // ignore: constant_identifier_names
   GEOCODE,
+  // ignore: constant_identifier_names
   LOCALITY,
+  // ignore: constant_identifier_names
   POLITICAL
 }
 

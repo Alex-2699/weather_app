@@ -8,7 +8,17 @@ import 'package:weather_app/utils/weather_data.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+
+  final String locationName;
+  final double latitude;
+  final double longitude;
+
+  const HomeScreen({
+    super.key, 
+    required this.locationName,
+    required this.latitude, 
+    required this.longitude, 
+  });
 
   Widget _buildScreen(WeatherResponse weather) {
     return Stack(
@@ -29,8 +39,7 @@ class HomeScreen extends StatelessWidget {
                 tempMin: weather.daily.tempMin.toInt(),
               ),
               LocationWeather(
-                location: 'san juan bautista tuxtepec',
-                country: 'mx',
+                location: locationName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
             ],
@@ -46,7 +55,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       body: FutureBuilder(
-        future: weatherProvider.getCurrentWeather(18.1074, -96.1457),
+        future: weatherProvider.getCurrentWeather(latitude, longitude),
         builder: (_, AsyncSnapshot<WeatherResponse> snapshot) {
           if(snapshot.hasError) return Center(child: Text('${snapshot.error}'));
 

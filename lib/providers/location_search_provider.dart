@@ -9,7 +9,10 @@ import 'package:weather_app/utils/utils.dart';
 class LocationSearchProvider extends ChangeNotifier {
 
   String? googlePlacesApiKey = dotenv.env['GOOGLE_PLACES_API_KEY'];
+  
   SuggestionsResponse placeSuggestions = SuggestionsResponse(predictions: [], status: 'initial');
+  CoordinatesResponse locationCoordinates = CoordinatesResponse(result: Result(geometry: Geometry(location: Location(lat: 0.0, lng: 0.0))), status: 'initial');
+
   Timer debounceTimer = Timer(Duration.zero, () {});
 
   Future getPlaceSuggestions(String locationName) async {
@@ -29,6 +32,18 @@ class LocationSearchProvider extends ChangeNotifier {
 
   }
 
+  Future<dynamic> getLocationCoordinates(String locationId) async {
+    final String jsonData = await ApiService().getJsonData(Environment.googleApiUrl, 'maps/api/place/details/json', {
+      'key': googlePlacesApiKey ?? '',
+      'place_id': locationId,
+      'fields': 'geometry',
+    });
+
+    locationCoordinates = CoordinatesResponse.fromJson(jsonData);
+    notifyListeners();
+  }
+
   SuggestionsResponse get suggestions => placeSuggestions;
+  CoordinatesResponse get coordinates => locationCoordinates;
 
 }
