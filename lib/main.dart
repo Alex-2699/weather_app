@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/screens/screens.dart';
 import 'package:weather_app/theme/app_theme.dart';
 
-void main() => runApp(const AppState());
+void main() async{
+  await dotenv.load(fileName: ".env");
+  runApp(const AppState());
+} 
 
 class AppState extends StatelessWidget {
   const AppState({super.key});
