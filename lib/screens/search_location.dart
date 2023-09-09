@@ -38,28 +38,28 @@ class SearchLocation extends StatelessWidget {
 
 class _BuildSuggestions extends StatelessWidget {
 
-  void onTapLocation(BuildContext context, Prediction prediction) async {
+  void _onTapLocation(BuildContext context, Prediction prediction) async {
     final searchProvider = Provider.of<LocationSearchProvider>(context, listen: false);
 
     try {
       await searchProvider.getLocationCoordinates(prediction.placeId);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(
-            locationName: prediction.description,
-            latitude: searchProvider.coordinates.result.geometry.location.lat, 
-            longitude: searchProvider.coordinates.result.geometry.location.lng,
-          ),
-        ),
-      );
+      _navigateToHomeScreen(context, prediction.description, searchProvider.coordinates.result.geometry.location);
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $error'),
-        ),
-      );
+      showErrorSnackbar(context, 'Holaaa');
     }
+  }
+
+  void _navigateToHomeScreen(BuildContext context, String locationName, Location coordinates) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomeScreen(
+          locationName: locationName,
+          latitude: coordinates.lat, 
+          longitude: coordinates.lng,
+        ),
+      ),
+    );
   }
 
   @override
@@ -72,7 +72,7 @@ class _BuildSuggestions extends StatelessWidget {
         itemBuilder: (_, i) {
           return SuggestionItem(
             description: searchProvider.placeSuggestions.predictions[i].description,
-            onTap:() => onTapLocation(context, searchProvider.placeSuggestions.predictions[i]),
+            onTap:() => _onTapLocation(context, searchProvider.placeSuggestions.predictions[i]),
           );
         },
         separatorBuilder: (context, index) => const Divider(),

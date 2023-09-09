@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );  
       },
-      child: const SearchLocation(),
+      child: const HomeScreen(latitude: 18.1074, longitude:  -96.1457, locationName: 'Tuxtepec'),
     );
   }
 }

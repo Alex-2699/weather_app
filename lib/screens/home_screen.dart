@@ -42,6 +42,8 @@ class HomeScreen extends StatelessWidget {
                 location: locationName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
+              WeatherForecastDisplay(),
+              WeatherForecastDisplay(),
             ],
           ),
         ),
@@ -67,3 +69,5 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+

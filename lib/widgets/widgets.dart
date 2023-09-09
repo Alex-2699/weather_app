@@ -5,4 +5,6 @@ export 'package:weather_app/widgets/header_weather.dart';
 export 'package:weather_app/widgets/input_text.dart';
 export 'package:weather_app/widgets/location_weather.dart';
 export 'package:weather_app/widgets/mountains.dart';
+export 'package:weather_app/widgets/scaffold_message.dart';
 export 'package:weather_app/widgets/suggestion_item.dart';
+export 'package:weather_app/widgets/weather_forecast_display.dart';
