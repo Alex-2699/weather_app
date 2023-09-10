@@ -29,21 +29,27 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               HeaderWeatherStatistics(
-                cloudinessPercent: weather.hourly.currentcloudiness,
-                humidityPercent: weather.hourly.currentPrecipitation,
-                windSpeedPercent: weather.hourly.currentwindSpeed,
+                thermalSensation: weather.hourly.currentThermalSensation,
+                precipitationPercent: weather.hourly.currentPrecipitation,
+                windSpeedPercent: weather.currentWeather.windSpeed,
               ),
               CurrentWeather(
-                temp: weather.currentWeather.temperature.toInt(),
-                tempMax: weather.daily.tempMax.toInt(),
-                tempMin: weather.daily.tempMin.toInt(),
+                temp: weather.currentWeather.temperature,
+                tempMax: weather.daily.tempMax[0],
+                tempMin: weather.daily.tempMin[0],
               ),
               LocationWeather(
                 location: locationName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
-              WeatherForecastDisplay(),
-              WeatherForecastDisplay(),
+              WeatherForecastDisplay(
+                headerLabel: 'Hoy',
+                hourlyWeather: weather.hourly,
+              ),
+              WeatherForecastDisplay(
+                headerLabel: 'Pronóstico',
+                daylyWeather: weather.daily,
+              ),
             ],
           ),
         ),

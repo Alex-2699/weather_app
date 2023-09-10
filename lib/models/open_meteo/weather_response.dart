@@ -12,9 +12,7 @@ class WeatherResponse {
   String timezoneAbbreviation;
   double elevation;
   CurrentWeatherDto currentWeather;
-  HourlyUnits hourlyUnits;
   HourlyDto hourly;
-  DailyUnits dailyUnits;
   DailyDto daily;
 
   WeatherResponse({
@@ -26,9 +24,7 @@ class WeatherResponse {
     required this.timezoneAbbreviation,
     required this.elevation,
     required this.currentWeather,
-    required this.hourlyUnits,
     required this.hourly,
-    required this.dailyUnits,
     required this.daily,
   });
 
@@ -43,9 +39,7 @@ class WeatherResponse {
     timezoneAbbreviation: json["timezone_abbreviation"],
     elevation: json["elevation"],
     currentWeather: CurrentWeatherDto.fromJson(json["current_weather"]),
-    hourlyUnits: HourlyUnits.fromJson(json["hourly_units"]),
     hourly: HourlyDto.fromJson(json["hourly"]),
-    dailyUnits: DailyUnits.fromJson(json["daily_units"]),
     daily: DailyDto.fromJson(json["daily"]),
   );
 

@@ -1,7 +1,7 @@
 class CurrentWeatherDto {
 
-  double temperature;
-  double windSpeed;
+  int temperature;
+  int windSpeed;
   int windDirection;
   int weatherCode;
   int isDay;
@@ -17,8 +17,8 @@ class CurrentWeatherDto {
   });
 
   factory CurrentWeatherDto.fromJson(Map<String, dynamic> json) => CurrentWeatherDto(
-    temperature: json["temperature"]?.toDouble(),
-    windSpeed: json["windspeed"]?.toDouble(),
+    temperature: json["temperature"]?.toInt(),
+    windSpeed: json["windspeed"]?.toInt(),
     windDirection: json["winddirection"],
     weatherCode: json["weathercode"],
     isDay: json["is_day"],

@@ -1,50 +1,53 @@
 
 class HourlyDto {
 
-  List<DateTime> time;
-  List<double> temperature;
+  List<String> time;
+  List<int> temperature;
+  List<int> apparentTemperature;
   List<int> precipitation;
-  List<int> cloudiness;
+  List<int> weathercode;
   List<double> windSpeed;
 
   HourlyDto({
     required this.time,
     required this.temperature,
+    required this.apparentTemperature,
     required this.precipitation,
-    required this.cloudiness,
+    required this.weathercode,
     required this.windSpeed,
   });
 
   factory HourlyDto.fromJson(Map<String, dynamic> json) => HourlyDto(
-    time: List<DateTime>.from(json["time"].map((x) => DateTime.parse(x))),
-    temperature: List<double>.from(json["temperature_2m"].map((x) => x?.toDouble())),
+    time: List<String>.from(json["time"].map((x) => x)).take(24).toList(),
+    temperature: List<int>.from(json["temperature_2m"].map((x) => x.toInt())),
+    apparentTemperature: List<int>.from(json["apparent_temperature"].map((x) => x.toInt())),
     precipitation: List<int>.from(json["precipitation_probability"].map((x) => x)),
-    cloudiness: List<int>.from(json["cloudcover"].map((x) => x)),
+    weathercode: List<int>.from(json["weathercode"].map((x) => x)),
     windSpeed: List<double>.from(json["windspeed_10m"].map((x) => x?.toDouble())),
   );
 
   int currentHour = DateTime.now().hour;
 
-  get currentcloudiness => cloudiness[currentHour];
-  get currentwindSpeed => windSpeed[currentHour];
+  get currentWindSpeed => windSpeed[currentHour];
   get currentPrecipitation => precipitation[currentHour];
+  get currentThermalSensation => apparentTemperature[currentHour];
 
 }
 
 class HourlyUnits {
 
-  String time;
-  String temperatureM;
-  String precipitationProbability;
-  String cloudiness;
-  String windSpeed;
+  String? time;
+  String? temperatureM;
+  String? precipitationProbability;
+  String? cloudiness;
+  String? windSpeed;
 
   HourlyUnits({
-    required this.time,
-    required this.temperatureM,
-    required this.precipitationProbability,
-    required this.cloudiness,
-    required this.windSpeed,
+    this.time,
+    this.temperatureM,
+    this.precipitationProbability,
+    this.cloudiness,
+    this.windSpeed,
   });
 
   factory HourlyUnits.fromJson(Map<String, dynamic> json) => HourlyUnits(

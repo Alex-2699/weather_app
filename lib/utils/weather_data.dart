@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:weather_icons/weather_icons.dart';
+
 class WeatherData {
 
   static const Map<int, String> weatherInterpretationCodes = {
@@ -29,6 +32,37 @@ class WeatherData {
       95: 'Tormenta Leve o moderada',
       96: 'Tormenta con granizo leve',
       99: 'Tormenta con granizo fuerte',
+    };
+
+  static const Map<int, IconData> weatherIconsDayTime = {
+      0: WeatherIcons.day_sunny, //Cielo limpio,
+      1: WeatherIcons.day_sunny, //Principalmente despejado,
+      2: WeatherIcons.day_cloudy, //Parcialmente nublado,
+      3: WeatherIcons.cloudy, //Cubierto,
+      45: WeatherIcons.day_fog, //Niebla y depósito de niebla de escarcha,
+      48: WeatherIcons.fog, //Niebla y depósito de niebla de escarcha,
+      51: WeatherIcons.raindrops, //Llovizna ligera,
+      53: WeatherIcons.sprinkle, //Llovizna moderada,
+      55: WeatherIcons.sprinkle, //Llovizna densa,
+      56: WeatherIcons.sprinkle, //Llovizna helada ligera,
+      57: WeatherIcons.sprinkle, //Llovizna helada densa,
+      61: WeatherIcons.day_rain_mix, //Lluvia leve,
+      63: WeatherIcons.day_rain_mix, //Lluvia moderada,
+      65: WeatherIcons.day_rain_mix, //Lluvia fuerte,
+      66: WeatherIcons.sleet, //Lluvia helada ligera,
+      67: WeatherIcons.sleet, //Lluvia helada fuerte,
+      71: WeatherIcons.day_sleet, //Caída de nieve leve,
+      73: WeatherIcons.day_sleet, //Caída de nieve moderada,
+      75: WeatherIcons.day_snow_wind, //Caída de nieve fuerte,
+      77: WeatherIcons.snowflake_cold, //Granos de nieve,
+      80: WeatherIcons.day_rain_mix, //Lluvias leves,
+      81: WeatherIcons.rain, //Lluvias moderadas,
+      82: WeatherIcons.rain_wind, //Lluvias violentas,
+      85: WeatherIcons.snow, //Chubascos de nieve ligeros,
+      86: WeatherIcons.snow_wind, //Chubascos de nieve fuertes,
+      95: WeatherIcons.lightning, //Tormenta Leve o moderada,
+      96: WeatherIcons.showers, //Tormenta con granizo leve,
+      99: WeatherIcons.thunderstorm, //Tormenta con granizo fuerte,
     };
 
 }

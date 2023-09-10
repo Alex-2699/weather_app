@@ -19,7 +19,7 @@ class LocationSearchProvider extends ChangeNotifier {
     if (debounceTimer.isActive) debounceTimer.cancel();
     
     debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      final String jsonData = await ApiService().getJsonData(Environment.googleApiUrl, 'maps/api/place/autocomplete/json', {
+      final String jsonData = await ApiService.getJsonData(Environment.googleApiUrl, 'maps/api/place/autocomplete/json', {
         'key': googlePlacesApiKey ?? '',
         'input': locationName,
         'language': 'es',
@@ -33,7 +33,7 @@ class LocationSearchProvider extends ChangeNotifier {
   }
 
   Future<dynamic> getLocationCoordinates(String locationId) async {
-    final String jsonData = await ApiService().getJsonData(Environment.googleApiUrl, 'maps/api/place/details/json', {
+    final String jsonData = await ApiService.getJsonData(Environment.googleApiUrl, 'maps/api/place/details/json', {
       'key': googlePlacesApiKey ?? '',
       'place_id': locationId,
       'fields': 'geometry',

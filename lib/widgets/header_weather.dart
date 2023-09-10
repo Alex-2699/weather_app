@@ -5,21 +5,21 @@ import 'package:weather_app/theme/app_theme.dart';
 
 class HeaderWeatherStatistics extends StatelessWidget {
   
-  final int cloudinessPercent;
-  final int humidityPercent;
-  final double windSpeedPercent;
+  final int thermalSensation;
+  final int precipitationPercent;
+  final int windSpeedPercent;
 
   const HeaderWeatherStatistics({
     super.key, 
-    required this.cloudinessPercent, 
-    required this.humidityPercent,
+    required this.thermalSensation, 
+    required this.precipitationPercent,
     required this.windSpeedPercent, 
   });
 
   Widget _buildWeatherInfoItem(IconData weatherConditionIcon, String percentage) {
     return Row(
       children: [
-        Icon(weatherConditionIcon, size: 25.h, color: AppTheme.primaryTextColor),
+        Icon(weatherConditionIcon, size: 25.sp, color: AppTheme.primaryTextColor),
         SizedBox(width: 8.w),
         Text(percentage, style: AppTheme.textSizeNormal),
       ],
@@ -33,9 +33,9 @@ class HeaderWeatherStatistics extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildWeatherInfoItem(Icons.cloud_queue_rounded, '$cloudinessPercent%'),
-          _buildWeatherInfoItem(Icons.air_rounded, '$windSpeedPercent/s'),
-          _buildWeatherInfoItem(Icons.water_drop_outlined, '$humidityPercent%'),
+          _buildWeatherInfoItem(Icons.thermostat_rounded, '$thermalSensation°'),
+          _buildWeatherInfoItem(Icons.air_rounded, '$windSpeedPercent km/h'),
+          _buildWeatherInfoItem(Icons.water_drop_outlined, '$precipitationPercent%'),
         ],
       ),
     );

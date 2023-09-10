@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
 
-  Future<String> getJsonData(String baseUrl, String endPoint, Map<String, String> params) async {
+  static Future<String> getJsonData(String baseUrl, String endPoint, Map<String, String> params) async {
     final Uri url = Uri.https(baseUrl, endPoint, params);
     
     try {
