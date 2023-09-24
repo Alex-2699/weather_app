@@ -6,7 +6,7 @@ import 'package:weather_app/utils/utils.dart';
 class WeatherProvider extends ChangeNotifier {
 
   Future<WeatherResponse> getCurrentWeather(double lat, double long) async {
-    final startDate = DateAndTimeFormat.getDate();
+    final startDate = await DateAndTimeFormat.getCurrentDate();
     final endDate = DateAndTimeFormat.addDaysToDate(startDate, 6);
 
     final String jsonData = await ApiService.getJsonData(Environment.openMeteoUrl, 'v1/forecast', {

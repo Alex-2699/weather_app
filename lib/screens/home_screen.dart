@@ -42,9 +42,14 @@ class HomeScreen extends StatelessWidget {
                 location: locationName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
+              //TODO: Refactorizar la clase forecast WeatherForecastDisplay
+              //Dividir en clases individuales para eviar exceso de validaciones
               WeatherForecastDisplay(
                 headerLabel: 'Hoy',
                 hourlyWeather: weather.hourly,
+                isoSunriseDate: weather.daily.sunrise[0],
+                isoSunsetDate: weather.daily.sunset[0],
+                currentHour: DateTime.parse(weather.currentWeather.time).hour -1,
               ),
               WeatherForecastDisplay(
                 headerLabel: 'Pronóstico',

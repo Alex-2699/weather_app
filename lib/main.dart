@@ -43,9 +43,10 @@ class MyApp extends StatelessWidget {
           title: 'Clima',
           theme: AppTheme.globalTheme,
           home: child,
-        );  
+        );
       },
-      child: const HomeScreen(latitude: 18.1074, longitude:  -96.1457, locationName: 'Tuxtepec'),
+      child: const SearchLocation(),
+      // child: const HomeScreen(latitude: 18.1074, longitude:  -96.1457, locationName: 'Tuxtepec'),
     );
   }
 }

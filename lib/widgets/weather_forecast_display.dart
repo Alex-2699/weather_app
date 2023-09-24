@@ -11,18 +11,22 @@ class WeatherForecastDisplay extends StatelessWidget {
   final String headerLabel;
   final HourlyDto? hourlyWeather;
   final DailyDto? daylyWeather;
+  final String? isoSunriseDate;
+  final String? isoSunsetDate;
+  final int? currentHour;
   bool isHourly = false;
 
   WeatherForecastDisplay({
     Key? key,
     required this.headerLabel,
+    this.daylyWeather, 
     this.hourlyWeather,
-    this.daylyWeather,
+    this.isoSunriseDate, 
+    this.isoSunsetDate, 
+    this.currentHour,
   }) : super(key: key) {
     isHourly = hourlyWeather != null;
   }
-
-  //TODO: Refactorizar esta clase
 
   Future<void> scrollToIndex(ScrollController controller, int index) async {
     await controller.animateTo(
@@ -32,9 +36,14 @@ class WeatherForecastDisplay extends StatelessWidget {
     );
   }
 
-  Widget _buildListForecastItems(ScrollController controller) {
-    final int lenght = isHourly ? hourlyWeather!.time.length : daylyWeather!.time.length;
+  int extractHour(String? isoDate) {
+    if (isoDate == null) return 0;
+    
+    final dateTime = DateTime.parse(isoDate);
+    return dateTime.hour;
+  }
 
+  Widget _buildListForecastItems(ScrollController controller) {
     final List<String> timestamps = isHourly ? hourlyWeather!.time : daylyWeather!.time;
     final List<int> weatherCodes = isHourly ? hourlyWeather!.weathercode : daylyWeather!.weathercode;
 
@@ -42,19 +51,26 @@ class WeatherForecastDisplay extends StatelessWidget {
     final List<int>? maxTempMarks = !isHourly ? daylyWeather!.tempMax : null;
     final List<int>? minTempMarks = !isHourly ? daylyWeather!.tempMin : null;
 
+    final int sunriseHour = extractHour(isoSunriseDate);
+    final int sunsetHour = extractHour(isoSunsetDate);
+
+    final bool isCurrentHour = isHourly; 
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
       child: ListView.separated(
         controller: controller,
         scrollDirection: Axis.horizontal,
-        itemCount: lenght,
+        itemCount: timestamps.length,
         itemBuilder: (_, i) => _ForecastItem(
           time: timestamps[i],
           weatherCode: weatherCodes[i],
-          temperature: isHourly ? temperatureMarks![i] : null,
-          tempMax: !isHourly ? maxTempMarks![i] : null,
-          tempMin: !isHourly ? minTempMarks![i] : null,
+          temperature: temperatureMarks?[i],
+          tempMax: maxTempMarks?[i],
+          tempMin: minTempMarks?[i],
+          sunriseHour: sunriseHour,
+          sunsetHour: sunsetHour,
+          isCurrentHour: isCurrentHour ?  currentHour == i -1 : false,
         ),
         separatorBuilder: (_, i) => SizedBox(width: 10.w),
       ),
@@ -69,11 +85,9 @@ class WeatherForecastDisplay extends StatelessWidget {
       builder: (context, constraints) {
 
         if (isHourly) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            scrollToIndex(controller, 15);
-          });
+          WidgetsBinding.instance.addPostFrameCallback((_) => scrollToIndex(controller, currentHour ?? 0));
         }
-
+        
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
           child: Column(
@@ -106,13 +120,19 @@ class _ForecastItem extends StatelessWidget {
   final int? tempMax;
   final int? tempMin;
   final int weatherCode;
+  final int sunriseHour;
+  final int sunsetHour;
+  final bool isCurrentHour;
 
   const _ForecastItem({ 
     required this.time, 
     required this.weatherCode, 
+    required this.sunriseHour, 
+    required this.sunsetHour,
+    required this.isCurrentHour, 
     this.temperature, 
     this.tempMax, 
-    this.tempMin,
+    this.tempMin, 
   });
 
   Widget _buildTimeStamp() {
@@ -134,17 +154,47 @@ class _ForecastItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       width: 100.w,
+      decoration: BoxDecoration(
+        color: isCurrentHour ? Colors.black.withOpacity(0.18) : null,
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildTimeStamp(),
-          BoxedIcon(WeatherData.weatherIconsDayTime[weatherCode]!, color: Colors.white, size: 35.sp),
+          _buildWeatherIcon(),
           _buildTempStamp()
         ],
       ),
     );
   }
+
+  Widget _buildWeatherIcon() {
+    if(sunriseHour == 0) {
+      return BoxedIcon(
+        WeatherData.weatherIconsDayTime[weatherCode]!, 
+        color: Colors.white, 
+        size: 35.sp,
+      );
+    }
+      
+    final int hourStamp = DateAndTimeFormat.getHourFromDate(time);
+    
+    if (hourStamp >= sunriseHour && hourStamp <= sunsetHour) {
+      return BoxedIcon(
+        WeatherData.weatherIconsDayTime[weatherCode]!, 
+        color: Colors.white, 
+        size: 35.sp,
+      );
+    } else {
+       return BoxedIcon(
+        WeatherData.weatherIconsNightTime[weatherCode]!, 
+        color: Colors.white, 
+        size: 35.sp,
+      );
+    }
+  } 
 
 }
