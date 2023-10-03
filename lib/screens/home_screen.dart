@@ -1,9 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/models/models.dart';
 
 import 'package:weather_app/providers/weather_provider.dart';
+import 'package:weather_app/utils/provider_enums.dart';
 import 'package:weather_app/utils/weather_data.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
@@ -14,18 +15,18 @@ class HomeScreen extends StatelessWidget {
   final double longitude;
 
   const HomeScreen({
-    super.key, 
+    super.key,
     required this.locationName,
-    required this.latitude, 
-    required this.longitude, 
+    required this.latitude,
+    required this.longitude,
   });
 
-  Widget _buildScreen(WeatherResponse weather) {
-    return Stack(
-      children: [
-        const GradientDecoration(),
-        const Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
-        SafeArea(
+  Widget _buildDetailScreen(BuildContext context, WeatherResponse weather) {
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: () async => _fetchWeatherData(context),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               HeaderWeatherStatistics(
@@ -58,27 +59,55 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WeatherProvider weatherProvider) {
+    switch (weatherProvider.fetchState) {
+      case FetchState.loading:
+        return Center(child: LoadingAnimationWidget.staggeredDotsWave(
+        color: Colors.white,
+        size: 50,
+      ),);
+
+      case FetchState.error:
+        return Text(weatherProvider.errorMessage);
+
+      case FetchState.completed:
+        return _buildDetailScreen(context, weatherProvider.weatherData);
+
+      default:
+        return Container();
+    }
+  }
+
+  Future<void> _fetchWeatherData(BuildContext context) async {
+    final weatherProvider = Provider.of<WeatherProvider>(context, listen: false);
+    await weatherProvider.getCurrentWeather(latitude, longitude);
+  }
+
+  FutureProvider<void> _futureWeatherProvider(BuildContext context) {
+    return FutureProvider.value(
+      initialData: null,
+      value: _fetchWeatherData(context),
+      child: Consumer<WeatherProvider>(builder: (_, weatherProvider, __) {
+        return _buildContent(context, weatherProvider);
+      }),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final weatherProvider = Provider.of<WeatherProvider>(context);
-
     return Scaffold(
-      body: FutureBuilder(
-        future: weatherProvider.getCurrentWeather(latitude, longitude),
-        builder: (_, AsyncSnapshot<WeatherResponse> snapshot) {
-          if(snapshot.hasError) return Center(child: Text('${snapshot.error}'));
-
-          if(!snapshot.hasData) return const Center(child: CupertinoActivityIndicator());
-          
-          return _buildScreen(snapshot.data!);
-        }
+      body: Stack(
+        children: [
+          const GradientDecoration(),
+          const Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
+          _futureWeatherProvider(context),
+        ],
       ),
     );
   }
+
 }
-
-
