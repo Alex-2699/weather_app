@@ -90,4 +90,6 @@ class AppTheme extends ChangeNotifier {
   Color get darkGray => _darkGray;
   Color get deepGray => _deepGray;
 
+  bool get darkModeOn => _darkModeOn;
+
 }

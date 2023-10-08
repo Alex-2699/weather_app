@@ -65,7 +65,7 @@ class WeatherForecast extends StatelessWidget {
     int tempMin = !isHourly ? forecastProvider.dailyWeather.tempMin[index] : 0; 
     int tempMax = !isHourly ? forecastProvider.dailyWeather.tempMax[index] : 0; 
 
-    return isHourly ? '$temp' : '$tempMax° | $tempMin°';
+    return isHourly ? '$temp°' : '$tempMax° | $tempMin°';
   }
 
   Widget _buildListForecastItems(ScrollController controller, BuildContext context) {

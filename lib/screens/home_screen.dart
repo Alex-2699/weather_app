@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           const GradientDecoration(),
           const Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
-          Expanded(child: _futureWeatherProvider(context)),
+          _futureWeatherProvider(context),
         ],
       ),
     );

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:weather_app/theme/app_theme.dart';
 
 class Mountains extends CustomPainter {
-
   final AppTheme appTheme;
 
   Mountains(this.appTheme);
@@ -83,12 +82,13 @@ class MountainBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = Provider.of<AppTheme>(context);
 
+    double sunPosition = appTheme.darkModeOn ? 50 : 300;
+    double moonPosition = appTheme.darkModeOn ? 300 : 50;
+
     return Stack(
       children: [
-        Positioned(
-          right: 20.w,
-          child: Icon(Icons.circle, size: 40.h, color: appTheme.mountain1),
-        ),
+        _SunOrMoonIcon(sunPosition: sunPosition, appTheme: appTheme),
+        _SunOrMoonIcon(sunPosition: moonPosition, appTheme: appTheme),
         SizedBox(
           width: double.infinity,
           height: 300.h,
@@ -101,4 +101,27 @@ class MountainBackground extends StatelessWidget {
       ],
     );
   }
+  
+}
+
+class _SunOrMoonIcon extends StatelessWidget {
+
+  final double sunPosition;
+  final AppTheme appTheme;
+
+  const _SunOrMoonIcon({
+    required this.sunPosition,
+    required this.appTheme,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedPositioned(
+      duration: const Duration(milliseconds: 500),
+      right: 20.w,
+      bottom: sunPosition,
+      child: Icon(Icons.circle, size: 40.h, color: appTheme.mountain1),
+    );
+  }
+
 }
