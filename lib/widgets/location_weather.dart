@@ -22,9 +22,9 @@ class LocationWeather extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          Text(locationDescription, style: AppTheme.textSizeNormalBold, textAlign: TextAlign.center),
+          Text(locationDescription, style: AppTheme().textSizeNormalBold, textAlign: TextAlign.center),
           SizedBox(height: 8.h),
-          Text(weatherDescription, style: AppTheme.textSizeNormal),
+          Text(weatherDescription, style: AppTheme().textSizeNormal),
         ],
       ),
     );

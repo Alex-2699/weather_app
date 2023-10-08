@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:weather_app/theme/app_theme.dart';
 
 class Mountains extends CustomPainter {
 
+  final AppTheme appTheme;
+
+  Mountains(this.appTheme);
+
   @override
   void paint(Canvas canvas, Size size) {
+
     final Paint paintM1 = Paint()
-      ..color = AppTheme.lightMountain1
+      ..color = appTheme.mountain1
       ..style = PaintingStyle.fill;
 
     final Path pathM1 = Path()
@@ -17,7 +23,7 @@ class Mountains extends CustomPainter {
       ..close();
 
     final Paint paintM2 = Paint()
-      ..color = AppTheme.lightMountain2
+      ..color = appTheme.mountain2
       ..style = PaintingStyle.fill;
 
     final Path pathM2 = Path()
@@ -27,7 +33,7 @@ class Mountains extends CustomPainter {
       ..close();
 
     final Paint paintM3 = Paint()
-      ..color = AppTheme.lightMountain3
+      ..color = appTheme.mountain3
       ..style = PaintingStyle.fill;
 
     final Path pathM3 = Path()
@@ -37,7 +43,7 @@ class Mountains extends CustomPainter {
       ..close();
 
     final Paint paintM4 = Paint()
-      ..color = AppTheme.lightMountain4
+      ..color = appTheme.mountain4
       ..style = PaintingStyle.fill;
 
     final Path pathM4 = Path()
@@ -47,7 +53,7 @@ class Mountains extends CustomPainter {
       ..close();
 
     final Paint paintM5 = Paint()
-      ..color = AppTheme.lightMountain5
+      ..color = appTheme.mountain5
       ..style = PaintingStyle.fill;
 
     final Path pathM5 = Path()
@@ -75,18 +81,20 @@ class MountainBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = Provider.of<AppTheme>(context);
+
     return Stack(
       children: [
         Positioned(
           right: 20.w,
-          child: Icon(Icons.circle, size: 40.h, color: AppTheme.lightMountain1),
+          child: Icon(Icons.circle, size: 40.h, color: appTheme.mountain1),
         ),
         SizedBox(
           width: double.infinity,
           height: 300.h,
           child: ClipRRect(
             child: CustomPaint(
-              painter: Mountains(),
+              painter: Mountains(appTheme),
             ),
           ),
         ),

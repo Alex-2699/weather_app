@@ -12,7 +12,7 @@ class WeatherForecast extends StatelessWidget {
 
   const WeatherForecast({super.key, required this.isHourly});
 
-  Future<void> scrollToIndex(ScrollController controller, BuildContext context) async {
+  Future<void> _autoScrollToIndex(ScrollController controller, BuildContext context) async {
     final forecastProvider = Provider.of<WeatherForecastProvider>(context, listen: false);
 
     if(!forecastProvider.hasScrolledToIndex) {
@@ -27,25 +27,27 @@ class WeatherForecast extends StatelessWidget {
     }
   }
 
-  String _getTimeHeader(WeatherForecastProvider forecastProvider, int i) {
+  String _getTimeHeader(WeatherForecastProvider forecastProvider, int index) {
     final String dateTimeFormat = isHourly ? 'h:00 a' : 'EEEE';
 
     final String dateTime = isHourly
-        ? forecastProvider.hourlyWeather.time[i]
-        : forecastProvider.dailyWeather.time[i];
+        ? forecastProvider.hourlyWeather.time[index]
+        : forecastProvider.dailyWeather.time[index];
 
     return DateAndTimeFormat.formatDateTime(dateTime, dateTimeFormat);
   }
 
-  IconData _getWeatherIcon(WeatherForecastProvider forecastProvider, int i) {
+  IconData _getWeatherIcon(WeatherForecastProvider forecastProvider, int index) {
+    final position = index + (24 * (forecastProvider.selectedDayIndex));
+
     final int sunriseHour = DateAndTimeFormat.getHourFromDate(forecastProvider.isoSunriseDate);
     final int sunsetHour = DateAndTimeFormat.getHourFromDate(forecastProvider.isoSunsetDate);
 
-    final int hourStamp = DateAndTimeFormat.getHourFromDate(forecastProvider.hourlyWeather.time[i * (forecastProvider.selectedDayIndex + 1)]);
+    final int hourStamp = DateAndTimeFormat.getHourFromDate(forecastProvider.hourlyWeather.time[position]);
 
     final int weatherIconCode = isHourly
-        ? forecastProvider.hourlyWeather.weathercode[i]
-        : forecastProvider.dailyWeather.weathercode[i];
+        ? forecastProvider.hourlyWeather.weathercode[position]
+        : forecastProvider.dailyWeather.weathercode[index];
 
     if(!isHourly) return WeatherData.weatherIconsDayTime[weatherIconCode]!;
 
@@ -55,11 +57,13 @@ class WeatherForecast extends StatelessWidget {
     return WeatherData.weatherIconsNightTime[weatherIconCode]!; 
   }
 
-  String _getTemperatureFooter(WeatherForecastProvider forecastProvider, int i) {
-    int temp = isHourly ? forecastProvider.hourlyWeather.temperature[i * (forecastProvider.selectedDayIndex + 1)] : 0; 
+  String _getTemperatureFooter(WeatherForecastProvider forecastProvider, int index) {
+    final position = index + (24 * (forecastProvider.selectedDayIndex));
 
-    int tempMin = !isHourly ? forecastProvider.dailyWeather.tempMin[i] : 0; 
-    int tempMax = !isHourly ? forecastProvider.dailyWeather.tempMax[i] : 0; 
+    int temp = isHourly ? forecastProvider.hourlyWeather.temperature[position] : 0; 
+
+    int tempMin = !isHourly ? forecastProvider.dailyWeather.tempMin[index] : 0; 
+    int tempMax = !isHourly ? forecastProvider.dailyWeather.tempMax[index] : 0; 
 
     return isHourly ? '$temp' : '$tempMax° | $tempMin°';
   }
@@ -95,7 +99,7 @@ class WeatherForecast extends StatelessWidget {
     
     return LayoutBuilder(
       builder: (context, constraints) {
-        WidgetsBinding.instance.addPostFrameCallback((_) => scrollToIndex(controller, context));
+        WidgetsBinding.instance.addPostFrameCallback((_) => _autoScrollToIndex(controller, context));
 
         return Container(
           margin: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
@@ -157,9 +161,9 @@ class _ForecastItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(timeHeader, style: AppTheme.textSizeSmall),
+            Text(timeHeader, style: AppTheme().textSizeSmall),
             BoxedIcon(weatherIcon, color: Colors.white, size: 35.sp),
-            Text(temperatureFooter, style: AppTheme.textSizeSmall),
+            Text(temperatureFooter, style: AppTheme().textSizeSmall),
           ],
         ),
       ),

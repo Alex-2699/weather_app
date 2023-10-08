@@ -20,6 +20,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AppTheme()),
         ChangeNotifierProvider(create: (_) => WeatherProvider()),
         ChangeNotifierProvider(create: (_) => LocationSearchProvider()),
         ChangeNotifierProvider(create: (_) => WeatherForecastProvider()),
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Clima',
-          theme: AppTheme.globalTheme,
+          theme: Provider.of<AppTheme>(context, listen: false).globalTheme,
           home: child,
         );
       },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/models/models.dart';
 import 'package:weather_app/providers/providers.dart';
+import 'package:weather_app/theme/app_theme.dart';
 
 import 'package:weather_app/utils/provider_enums.dart';
 import 'package:weather_app/utils/weather_data.dart';
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildDetailScreen(BuildContext context, WeatherResponse weather) {
     return SafeArea(
+      bottom: false,
       child: RefreshIndicator(
         onRefresh: () async => _fetchWeatherData(context),
         child: SingleChildScrollView(
@@ -71,10 +73,13 @@ class HomeScreen extends StatelessWidget {
 
   Future<void> _updateWeatherForecastProvider(BuildContext context, WeatherResponse weatherData) async {
     final forecastProvider = Provider.of<WeatherForecastProvider>(context, listen: false);
+    final darkModeProvider = Provider.of<AppTheme>(context, listen: false);
     
     await forecastProvider.updateWeatherData(weatherData);
     await forecastProvider.updateSelectedDayIndex(0);
     await forecastProvider.updateScrolledToIndex(false);
+
+    await darkModeProvider.updateDarkModeValue(weatherData.currentWeather.isDay != 1);
   }
 
   Future<void> _fetchWeatherData(BuildContext context) async {
@@ -99,7 +104,7 @@ class HomeScreen extends StatelessWidget {
         children: [
           const GradientDecoration(),
           const Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
-          _futureWeatherProvider(context),
+          Expanded(child: _futureWeatherProvider(context)),
         ],
       ),
     );

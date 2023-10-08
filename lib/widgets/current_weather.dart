@@ -19,9 +19,9 @@ class CurrentWeather extends StatelessWidget {
   Widget _buildMaxAndMinTemp(IconData arrowIndicator, String temp, String tempIndicator) {
     return Row(
       children: [
-        Icon(arrowIndicator, size: 30.sp, color: AppTheme.primaryTextColor.withOpacity(0.7)),
-        Text(temp, style: AppTheme.textSizeNormal),
-        Text(tempIndicator, style: AppTheme.textSizeSmall),
+        Icon(arrowIndicator, size: 30.sp, color: AppTheme().primaryTextColor.withOpacity(0.7)),
+        Text(temp, style: AppTheme().textSizeNormal),
+        Text(tempIndicator, style: AppTheme().textSizeSmall),
       ],
     );
   }
@@ -31,11 +31,11 @@ class CurrentWeather extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('$temp', style: AppTheme.textSizeExtraLarge),
+        Text('$temp', style: AppTheme().textSizeExtraLarge),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('°c', style: AppTheme.textSizeLarge),
+            Text('°c', style: AppTheme().textSizeLarge),
             _buildMaxAndMinTemp(Icons.arrow_drop_up_rounded, '$tempMax° ', 'MAX'),
             _buildMaxAndMinTemp(Icons.arrow_drop_down_rounded, '$tempMin° ', 'MIN'),
           ],

@@ -19,9 +19,9 @@ class HeaderWeatherStatistics extends StatelessWidget {
   Widget _buildWeatherInfoItem(IconData weatherConditionIcon, String percentage) {
     return Row(
       children: [
-        Icon(weatherConditionIcon, size: 25.sp, color: AppTheme.primaryTextColor),
+        Icon(weatherConditionIcon, size: 25.sp, color: AppTheme().primaryTextColor),
         SizedBox(width: 8.w),
-        Text(percentage, style: AppTheme.textSizeNormal),
+        Text(percentage, style: AppTheme().textSizeNormal),
       ],
     );
   }
