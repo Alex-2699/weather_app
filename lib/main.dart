@@ -21,7 +21,8 @@ class AppState extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => WeatherProvider()),
-        ChangeNotifierProvider(create: (_) => LocationSearchProvider())
+        ChangeNotifierProvider(create: (_) => LocationSearchProvider()),
+        ChangeNotifierProvider(create: (_) => WeatherForecastProvider()),
       ],
       child: const MyApp(),
     );

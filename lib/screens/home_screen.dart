@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/models/models.dart';
+import 'package:weather_app/providers/providers.dart';
 
-import 'package:weather_app/providers/weather_provider.dart';
 import 'package:weather_app/utils/provider_enums.dart';
 import 'package:weather_app/utils/weather_data.dart';
+import 'package:weather_app/widgets/resources/resources.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -43,19 +43,8 @@ class HomeScreen extends StatelessWidget {
                 location: locationName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weather.currentWeather.weatherCode]!,
               ),
-              //TODO: Refactorizar la clase forecast WeatherForecastDisplay
-              //Dividir en clases individuales para eviar exceso de validaciones
-              WeatherForecastDisplay(
-                headerLabel: 'Hoy',
-                hourlyWeather: weather.hourly,
-                isoSunriseDate: weather.daily.sunrise[0],
-                isoSunsetDate: weather.daily.sunset[0],
-                currentHour: DateTime.parse(weather.currentWeather.time).hour -1,
-              ),
-              WeatherForecastDisplay(
-                headerLabel: 'Pronóstico',
-                daylyWeather: weather.daily,
-              ),
+              const WeatherForecast(isHourly: true),
+              const WeatherForecast(isHourly: false),
             ],
           ),
         ),
@@ -66,20 +55,26 @@ class HomeScreen extends StatelessWidget {
   Widget _buildContent(BuildContext context, WeatherProvider weatherProvider) {
     switch (weatherProvider.fetchState) {
       case FetchState.loading:
-        return Center(child: LoadingAnimationWidget.staggeredDotsWave(
-        color: Colors.white,
-        size: 50,
-      ),);
+        return CustomProgressIndicator.staggeredDotsWave();
 
       case FetchState.error:
         return Text(weatherProvider.errorMessage);
 
       case FetchState.completed:
+        _updateWeatherForecastProvider(context, weatherProvider.weatherData);
         return _buildDetailScreen(context, weatherProvider.weatherData);
 
       default:
         return Container();
     }
+  }
+
+  Future<void> _updateWeatherForecastProvider(BuildContext context, WeatherResponse weatherData) async {
+    final forecastProvider = Provider.of<WeatherForecastProvider>(context, listen: false);
+    
+    await forecastProvider.updateWeatherData(weatherData);
+    await forecastProvider.updateSelectedDayIndex(0);
+    await forecastProvider.updateScrolledToIndex(false);
   }
 
   Future<void> _fetchWeatherData(BuildContext context) async {

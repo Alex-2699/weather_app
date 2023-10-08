@@ -18,7 +18,7 @@ class HourlyDto {
   });
 
   factory HourlyDto.fromJson(Map<String, dynamic> json) => HourlyDto(
-    time: List<String>.from(json["time"].map((x) => x)).take(24).toList(),
+    time: List<String>.from(json["time"].map((x) => x)).toList(),
     temperature: List<int>.from(json["temperature_2m"].map((x) => x.toInt())),
     apparentTemperature: List<int>.from(json["apparent_temperature"].map((x) => x.toInt())),
     precipitation: List<int>.from(json["precipitation_probability"].map((x) => x)),
