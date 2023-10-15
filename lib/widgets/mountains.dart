@@ -82,8 +82,8 @@ class MountainBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = Provider.of<AppTheme>(context);
 
-    double sunPosition = appTheme.darkModeOn ? 50 : 300;
-    double moonPosition = appTheme.darkModeOn ? 300 : 50;
+    double sunPosition = appTheme.darkModeOn ? 50.h : 250.h;
+    double moonPosition = appTheme.darkModeOn ? 250.h : 50.h;
 
     return Stack(
       children: [
