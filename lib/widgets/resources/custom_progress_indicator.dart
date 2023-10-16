@@ -14,4 +14,13 @@ class CustomProgressIndicator {
     );
   }
 
+  static Widget staggeredDotsWaveDark() {
+    return Center(
+      child: LoadingAnimationWidget.staggeredDotsWave(
+        color: Colors.blueGrey,
+        size: 30.h,
+      ),
+    );
+  }
+
 }

@@ -13,10 +13,10 @@ class AppBarCustom extends StatelessWidget implements PreferredSizeWidget{
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
+    //final appTheme = Provider.of<AppTheme>(context);
 
     return AppBar(
-      title: Text(title, style: TextStyle(color: appTheme.deepGray)),
+      title: Text(title, style: TextStyle(color: AppTheme().deepGray)),
       backgroundColor: ThemeData.light().scaffoldBackgroundColor,
       leading:  const _CircleIcon(icon: Icons.location_on_rounded),
       leadingWidth: 100.w,
@@ -36,13 +36,13 @@ class _CircleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
+    //final appTheme = Provider.of<AppTheme>(context);
     
     return Container(
       width: 100,
       height: 100,
       decoration: BoxDecoration(shape: BoxShape.circle, color: AppTheme().mediumGray),
-      child: Center(child: Icon(icon, size: 20, color: appTheme.deepGray)),
+      child: Center(child: Icon(icon, size: 20, color: AppTheme().deepGray)),
     );
   }
 }
