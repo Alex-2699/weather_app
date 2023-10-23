@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:weather_app/theme/app_theme.dart';
+import 'package:weather_app/providers/providers.dart';
 
-class LocationWeather extends StatelessWidget {
+class LocationWeather extends ConsumerWidget {
 
   final String location;
   final String weatherDescription;
@@ -15,16 +16,18 @@ class LocationWeather extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appTheme = ref.watch(appThemeProvider);
+
     final String locationDescription = location.toUpperCase();
 
     return SizedBox(
       width: double.infinity,
       child: Column(
         children: [
-          Text(locationDescription, style: AppTheme().textSizeNormalBold, textAlign: TextAlign.center),
+          Text(locationDescription, style: appTheme.textSizeNormalBold, textAlign: TextAlign.center),
           SizedBox(height: 8.h),
-          Text(weatherDescription, style: AppTheme().textSizeNormal),
+          Text(weatherDescription, style: appTheme.textSizeNormal),
         ],
       ),
     );

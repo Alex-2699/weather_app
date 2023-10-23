@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:weather_app/theme/app_theme.dart';
+import 'package:weather_app/providers/providers.dart';
 
-class GradientDecoration extends StatelessWidget {
+class GradientDecoration extends ConsumerWidget {
   const GradientDecoration({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
+  Widget build(BuildContext context, WidgetRef ref ) {
+    final appTheme = ref.watch(appThemeProvider);
     
     return Container(
       decoration: BoxDecoration(
@@ -20,4 +20,5 @@ class GradientDecoration extends StatelessWidget {
       ),
     );
   }
+  
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class InputText extends StatelessWidget {
+import 'package:weather_app/providers/providers.dart';
+
+class InputText extends ConsumerWidget {
 
   final IconData? prefixIcon;
   final Function(String value) onChange;
@@ -13,12 +15,14 @@ class InputText extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    BorderSide borderSide = BorderSide(color: AppTheme().lightGray);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appTheme = ref.watch(appThemeProvider);
+
+    BorderSide borderSide = BorderSide(color: appTheme.lightGray);
     BorderRadius borderRadius = BorderRadius.circular(10);
 
     return TextField(
-      cursorColor: AppTheme().darkGray,
+      cursorColor: appTheme.darkGray,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: borderSide, 
@@ -30,11 +34,11 @@ class InputText extends StatelessWidget {
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color: AppTheme().darkGray,
+          color: appTheme.darkGray,
         ),
         hintText: 'Ciudad',
         filled: true,
-        fillColor: AppTheme().lightGray
+        fillColor: appTheme.lightGray
       ),
       onChanged: (value) => onChange(value),
     );

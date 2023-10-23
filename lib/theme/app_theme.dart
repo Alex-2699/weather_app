@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class AppTheme extends ChangeNotifier {
+class AppTheme {
 
   bool _darkModeOn = false;
 
@@ -41,7 +41,6 @@ class AppTheme extends ChangeNotifier {
 
   Future<void> updateDarkModeValue(bool darkModeOn) async {
     _darkModeOn = darkModeOn;
-    notifyListeners();
   }
 
   List<Color> get backgroundGradient => [

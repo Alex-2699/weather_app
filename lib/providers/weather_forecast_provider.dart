@@ -1,51 +1,73 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:flutter/material.dart';
 import 'package:weather_app/models/models.dart';
 
-class WeatherForecastProvider extends ChangeNotifier {
 
-  late HourlyDto _hourlyWeather;
-  late DailyDto _dailyWeather;
-  late String _isoSunriseDate;
-  late String _isoSunsetDate;
-  late int _currentHour;
+final weatherForecastProvider = StateNotifierProvider<WeatherForecastNotifier, WeatherForecast>((ref) {
+  return WeatherForecastNotifier();
+});
 
-  int _selectedDayIndex = 0;
-  bool _hasScrolledToIndex = false;
+class WeatherForecastNotifier extends StateNotifier<WeatherForecast> {
+  WeatherForecastNotifier() : super(WeatherForecast());
 
   Future<void> updateWeatherData(WeatherResponse weatherData) async {
-    _hourlyWeather = weatherData.hourly;
-    _dailyWeather = weatherData.daily;
-    _isoSunriseDate = (weatherData.daily.sunrise.isNotEmpty
-        ? weatherData.daily.sunrise[0]
-        : null)!;
-    _isoSunsetDate = (weatherData.daily.sunset.isNotEmpty
-        ? weatherData.daily.sunset[0]
-        : null)!;
-    _currentHour = DateTime.parse(weatherData.currentWeather.time).hour -1;
+    state = state.copyWith(
+      hourlyWeather: weatherData.hourly,
+      dailyWeather: weatherData.daily,
+      isoSunriseDate: weatherData.daily.sunrise.isNotEmpty ? weatherData.daily.sunrise[0] : null,
+      isoSunsetDate: weatherData.daily.sunset.isNotEmpty ? weatherData.daily.sunset[0] : null,
+      currentHour: DateTime.parse(weatherData.currentWeather.time).hour - 1,
+    );
   }
 
-  Future<void> updateSelectedDayIndex(int selectedDayIndex) async {
-    _selectedDayIndex = selectedDayIndex;
-    notifyListeners();
+  void updateSelectedDayIndex(int selectedDayIndex) {
+    state = state.copyWith(selectedDayIndex: selectedDayIndex);
   }
 
-  Future<void> updateScrolledToIndex(bool hasScrolledToIndex) async {
-    _hasScrolledToIndex = hasScrolledToIndex;
+  void updateScrolledToIndex(bool hasScrolledToIndex) {
+    state = state.copyWith(hasScrolledToIndex: hasScrolledToIndex);
   }
+  
+}
 
-  HourlyDto get hourlyWeather => _hourlyWeather;
+class WeatherForecast {
 
-  DailyDto get dailyWeather => _dailyWeather;
+  final HourlyDto? hourlyWeather;
+  final DailyDto? dailyWeather;
+  final String? isoSunriseDate;
+  final String? isoSunsetDate;
+  final int? currentHour;
+  final int selectedDayIndex;
+  final bool hasScrolledToIndex;
+  
+  WeatherForecast({
+    this.hourlyWeather,
+    this.dailyWeather,
+    this.isoSunriseDate,
+    this.isoSunsetDate,
+    this.currentHour,
+    this.selectedDayIndex = 0,
+    this.hasScrolledToIndex = false,
+  });
 
-  String get isoSunriseDate => _isoSunriseDate;
-
-  String get isoSunsetDate => _isoSunsetDate;
-
-  int get currentHour => _currentHour;
-
-  int get selectedDayIndex => _selectedDayIndex;
-
-  bool get hasScrolledToIndex => _hasScrolledToIndex;
+  WeatherForecast copyWith({
+    HourlyDto? hourlyWeather,
+    DailyDto? dailyWeather,
+    String? isoSunriseDate,
+    String? isoSunsetDate,
+    int? currentHour,
+    int? selectedDayIndex,
+    bool? hasScrolledToIndex,
+  }) {
+    return WeatherForecast(
+      hourlyWeather: hourlyWeather ?? this.hourlyWeather,
+      dailyWeather: dailyWeather ?? this.dailyWeather,
+      isoSunriseDate: isoSunriseDate ?? this.isoSunriseDate,
+      isoSunsetDate: isoSunsetDate ?? this.isoSunsetDate,
+      currentHour: currentHour ?? this.currentHour,
+      selectedDayIndex: selectedDayIndex ?? this.selectedDayIndex,
+      hasScrolledToIndex: hasScrolledToIndex ?? this.hasScrolledToIndex,
+    );
+  }
 
 }

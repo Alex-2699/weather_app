@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:weather_app/screens/screens.dart';
+import 'package:weather_app/theme/app_theme.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -14,23 +15,6 @@ void main() async {
     ),
   );
 } 
-
-// class AppState extends StatelessWidget {
-//   const AppState({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider(create: (_) => AppTheme()),
-//         ChangeNotifierProvider(create: (_) => WeatherProvider()),
-//         ChangeNotifierProvider(create: (_) => LocationSearchProvider()),
-//         ChangeNotifierProvider(create: (_) => WeatherForecastProvider()),
-//       ],
-//       child: const MyApp(),
-//     );
-//   }
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,6 +30,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Clima',
           home: child,
+          theme: AppTheme().globalTheme,
         );
       },
       child: const SearchLocation(),

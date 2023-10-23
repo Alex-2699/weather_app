@@ -1,46 +1,23 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:weather_app/models/models.dart';
-import 'package:weather_app/utils/provider_enums.dart';
-import 'package:weather_app/utils/utils.dart';
+import 'package:weather_app/providers/providers.dart';
+import 'package:weather_app/services/services.dart';
 
-class WeatherProvider extends ChangeNotifier {
+final coordinatesProvider = StateProvider<Location>((ref) {
+  return Location(lat: 0.0, lng: 0.0);
+});
 
-  FetchState _fetchState = FetchState.loading;
-  String _errorMessage = '';
+final weatherProvider = FutureProvider.autoDispose<WeatherResponse>((ref) async {
+  final coordinates = ref.watch(coordinatesProvider);
+  final currentWeather = await WeatherService.getCurrentWeather(coordinates.lat, coordinates.lng);
 
-  late WeatherResponse weatherData;
+  await ref.watch(weatherForecastProvider.notifier).updateWeatherData(currentWeather);
+  ref.watch(weatherForecastProvider.notifier).updateSelectedDayIndex(0);
+  ref.watch(weatherForecastProvider.notifier).updateScrolledToIndex(false);
 
-  Future<void> getCurrentWeather(double lat, double long) async {
-    _fetchState = FetchState.loading;
+  // ref.watch(appThemeProvider);
 
-    try {
-      final startDate = await DateAndTimeFormat.getCurrentDate();
-      final endDate = DateAndTimeFormat.addDaysToDate(startDate, 6);
+  return currentWeather;
+});
 
-      final String jsonData = await ApiService.getJsonData(Environment.openMeteoUrl, 'v1/forecast', {
-        'latitude': lat.toString(),
-        'longitude': long.toString(),
-        'timezone': 'auto',
-        'start_date': startDate,
-        'end_date': endDate,
-        'current_weather': 'true',
-        'hourly': 'temperature_2m,apparent_temperature,precipitation_probability,weathercode,windspeed_10m',
-        'daily': 'weathercode,temperature_2m_max,temperature_2m_min,sunrise,sunset',
-      });
-
-      weatherData = WeatherResponse.fromJson(jsonData);
-      _fetchState = FetchState.completed;
-
-    } catch (error) {
-      _fetchState = FetchState.error;
-      _errorMessage = error.toString();
-    }
-
-    notifyListeners();
-  }
-
-  FetchState get fetchState => _fetchState;
-  String get errorMessage => _errorMessage;
-
-}

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:weather_app/theme/app_theme.dart';
+import 'package:weather_app/providers/providers.dart';
 
 class HeaderWeatherStatistics extends StatelessWidget {
   
@@ -16,16 +17,6 @@ class HeaderWeatherStatistics extends StatelessWidget {
     required this.windSpeedPercent, 
   });
 
-  Widget _buildWeatherInfoItem(IconData weatherConditionIcon, String percentage) {
-    return Row(
-      children: [
-        Icon(weatherConditionIcon, size: 25.sp, color: AppTheme().primaryTextColor),
-        SizedBox(width: 8.w),
-        Text(percentage, style: AppTheme().textSizeNormal),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,11 +24,36 @@ class HeaderWeatherStatistics extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildWeatherInfoItem(Icons.thermostat_rounded, '$thermalSensation°'),
-          _buildWeatherInfoItem(Icons.air_rounded, '$windSpeedPercent km/h'),
-          _buildWeatherInfoItem(Icons.water_drop_outlined, '$precipitationPercent%'),
+          WeatherInfoItem(weatherConditionIcon: Icons.thermostat_rounded, percentage: '$thermalSensation°'),
+          WeatherInfoItem(weatherConditionIcon: Icons.air_rounded, percentage: '$windSpeedPercent km/h'),
+          WeatherInfoItem(weatherConditionIcon: Icons.water_drop_outlined, percentage: '$precipitationPercent%'),
         ],
       ),
+    );
+  }
+
+}
+
+class WeatherInfoItem extends ConsumerWidget {
+  const WeatherInfoItem({
+    super.key,
+    required this.weatherConditionIcon,
+    required this.percentage,
+  });
+
+  final IconData weatherConditionIcon;
+  final String percentage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appTheme = ref.watch(appThemeProvider);
+
+    return Row(
+      children: [
+        Icon(weatherConditionIcon, size: 25.sp, color: appTheme.primaryTextColor),
+        SizedBox(width: 8.w),
+        Text(percentage, style: appTheme.textSizeNormal),
+      ],
     );
   }
 

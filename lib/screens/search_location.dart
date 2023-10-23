@@ -6,14 +6,14 @@ import 'package:weather_app/models/models.dart';
 import 'package:weather_app/providers/location_search_provider.dart';
 
 import 'package:weather_app/screens/home_screen.dart';
-import 'package:weather_app/widgets/resources/resources.dart';
+import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class SearchLocation extends ConsumerWidget {
   const SearchLocation({super.key});
 
   void setLocationNameInput(WidgetRef ref, String locationName) {
-    ref.read(locationNameProvider.notifier).update((state) => state = locationName);
+    ref.read(locationNameProvider.notifier).state = locationName;
   }
 
   @override
@@ -42,30 +42,21 @@ class SearchLocation extends ConsumerWidget {
 
 class _BuildSuggestions extends ConsumerWidget {
 
-  void _onTapLocation(BuildContext context, WidgetRef ref, Prediction place) async {
-      final coordinatesProvider = ref.read(getPlaceCordinatesProvider(place.placeId));
-    try {
-
-      _navigateToHomeScreen(context, place.description, coordinatesProvider.asData!.value);
-    } catch (error) {
-      showErrorSnackbar(context, coordinatesProvider.error.toString());
-    }
+  Future<void> _onTapLocation(BuildContext context, WidgetRef ref, Prediction place) async {
+    await ref.read(getPlaceCordinatesProvider(place.placeId).future);
+    _navigateToHomeScreen(context, place.description);
   }
 
-  void _navigateToHomeScreen(BuildContext context, String locationName, Location coordinates) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => HomeScreen(
-    //       locationName: locationName,
-    //       latitude: coordinates.lat, 
-    //       longitude: coordinates.lng,
-    //     ),
-    //   ),
-    // );
+  void _navigateToHomeScreen(BuildContext context, String locationName) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen(locationName: locationName)),
+    );
   }
 
   Widget _listViewSuggestions(BuildContext context, WidgetRef ref, SuggestionsResponse suggestions) {
+    if(suggestions.predictions.isEmpty) return const Text('No hay resultados');
+    
     return Expanded(
       child: ListView.separated(
         itemCount: suggestions.predictions.length,
@@ -82,14 +73,14 @@ class _BuildSuggestions extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final suggestionsProvider = ref.watch(searchLocationProvider);
+    final locationName = ref.watch(locationNameProvider);
+    final suggestions = ref.watch(searchLocationProvider(locationName));
 
     return Container(
-      child: suggestionsProvider.when(
-        data: (data) => _listViewSuggestions(context, ref, data), 
-        error: (error, stackTrace) => Text('Error: $error'), 
-        loading: () => CustomProgressIndicator.staggeredDotsWaveDark(),
-      )
+      child: RequestStateEvaluator(
+        dataProvider: suggestions,
+        onDataHasLoaded: (data) => _listViewSuggestions(context, ref, data),
+      ).evaluateRequest(CustomProgressIndicator.staggeredDotsWaveDark())
     );
   }
 

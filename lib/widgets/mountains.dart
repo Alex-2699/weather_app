@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+
+import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/theme/app_theme.dart';
 
 class Mountains extends CustomPainter {
@@ -75,12 +77,12 @@ class Mountains extends CustomPainter {
   
 }
 
-class MountainBackground extends StatelessWidget {
+class MountainBackground extends ConsumerWidget {
   const MountainBackground({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final appTheme = Provider.of<AppTheme>(context);
+  Widget build(BuildContext context, WidgetRef ref ) {
+    final appTheme = ref.watch(appThemeProvider);
 
     double sunPosition = appTheme.darkModeOn ? 50.h : 250.h;
     double moonPosition = appTheme.darkModeOn ? 250.h : 50.h;
