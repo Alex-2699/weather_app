@@ -1,3 +1,4 @@
+import 'package:worldtime/worldtime.dart';
 
 import 'package:weather_app/models/models.dart';
 import 'package:weather_app/utils/utils.dart';
@@ -6,7 +7,9 @@ class WeatherService {
 
   static Future<WeatherResponse> getCurrentWeather(double lat, double long) async {
 
-    final startDate = await DateAndTimeFormat.getCurrentDate();
+    final DateTime locationDate = await Worldtime().timeByLocation(latitude: lat, longitude: long);
+
+    final startDate = DateAndTimeFormat.formatDateTime('$locationDate', 'yyyy-MM-dd');
     final endDate = DateAndTimeFormat.addDaysToDate(startDate, 6);
 
     final String jsonData = await ApiService.getJsonData(Environment.openMeteoUrl, 'v1/forecast', {
