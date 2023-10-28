@@ -78,7 +78,7 @@ class Mountains extends CustomPainter {
 }
 
 class MountainBackground extends ConsumerWidget {
-  const MountainBackground({super.key});
+  MountainBackground({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref ) {

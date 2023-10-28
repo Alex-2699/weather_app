@@ -16,7 +16,8 @@ final weatherProvider = FutureProvider.autoDispose<WeatherResponse>((ref) async 
   ref.watch(weatherForecastProvider.notifier).updateSelectedDayIndex(0);
   ref.watch(weatherForecastProvider.notifier).updateScrolledToIndex(false);
 
-  // ref.watch(appThemeProvider);
+  final appTheme = ref.watch(appThemeProvider);
+  await appTheme.updateDarkModeValue(currentWeather.currentWeather.isDay == 0);
 
   return currentWeather;
 });

@@ -45,7 +45,7 @@ class AppTheme {
 
   List<Color> get backgroundGradient => [
     primaryColor,
-    secondaryColor
+    secondaryColor,
   ];
 
   TextStyle get textSizeSmall => TextStyle(

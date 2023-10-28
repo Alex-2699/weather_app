@@ -50,8 +50,8 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          const GradientDecoration(),
-          const Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
+          GradientDecoration(),
+          Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
           RequestStateEvaluator(
             dataProvider: currentWeatherProvider, 
             onDataHasLoaded: (data) => _buildDetailScreen(ref, data),

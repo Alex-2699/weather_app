@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weather_app/providers/providers.dart';
 
 class GradientDecoration extends ConsumerWidget {
-  const GradientDecoration({super.key});
+  GradientDecoration({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref ) {
