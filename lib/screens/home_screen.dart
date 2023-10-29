@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:weather_app/models/models.dart';
@@ -58,6 +59,8 @@ class HomeScreen extends ConsumerWidget {
           ).evaluateRequest(CustomProgressIndicator.staggeredDotsWave())
         ],
       ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: FABMenu(),
     );
   }
 

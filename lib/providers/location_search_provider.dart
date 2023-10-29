@@ -18,5 +18,7 @@ final getPlaceCordinatesProvider = FutureProvider.family.autoDispose<Location, S
   final coordinates = await SearchLocationService.getLocationCoordinates(placeId);
   ref.read(coordinatesProvider.notifier).state = coordinates.result.geometry.location;
 
+  ref.read(setDefaultLocationProvider(placeId));
+
   return coordinates.result.geometry.location;
 });

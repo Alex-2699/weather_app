@@ -3,14 +3,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:weather_app/models/models.dart';
-import 'package:weather_app/providers/location_search_provider.dart';
+import 'package:weather_app/providers/providers.dart';
 
 import 'package:weather_app/screens/home_screen.dart';
 import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class SearchLocation extends ConsumerWidget {
-  const SearchLocation({super.key});
+  final bool closeScreen;
+
+  const SearchLocation({
+    super.key,
+    this.closeScreen = false, 
+  });
 
   void setLocationNameInput(WidgetRef ref, String locationName) {
     ref.read(locationNameProvider.notifier).state = locationName;
@@ -19,7 +24,7 @@ class SearchLocation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: const AppBarCustom(title: 'Buscar ciudad'),
+      appBar: AppBarCustom(title: 'Buscar ciudad', closeScreen: closeScreen),
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
@@ -43,14 +48,18 @@ class SearchLocation extends ConsumerWidget {
 class _BuildSuggestions extends ConsumerWidget {
 
   Future<void> _onTapLocation(BuildContext context, WidgetRef ref, Prediction place) async {
+    final locationProperties = LocationProperties(placeId: place.placeId, placeName: place.description, isDefaultLocation: true);
+
+    ref.read(locationPropertiesProvider.notifier).state = locationProperties;
     await ref.read(getPlaceCordinatesProvider(place.placeId).future);
+    
     _navigateToHomeScreen(context, place.description);
   }
 
   void _navigateToHomeScreen(BuildContext context, String locationName) {
-    Navigator.push(
-      context,
+    Navigator.of(context).pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => HomeScreen(locationName: locationName)),
+      (route) => false,
     );
   }
 

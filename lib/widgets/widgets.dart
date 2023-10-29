@@ -9,3 +9,4 @@ export 'package:weather_app/widgets/resources/custom_progress_indicator.dart';
 export 'package:weather_app/widgets/scaffold_message.dart';
 export 'package:weather_app/widgets/suggestion_item.dart';
 export 'package:weather_app/widgets/weather_forecast.dart';
+export 'package:weather_app/widgets/expandable_fab_menu.dart';

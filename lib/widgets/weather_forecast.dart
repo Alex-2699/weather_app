@@ -13,7 +13,6 @@ class WeatherForecastList extends ConsumerWidget {
 
   Future<void> _autoScrollToIndex(ScrollController controller, WidgetRef ref) async {
     final forecastProvider = ref.read(weatherForecastProvider);
-    //final forecastProvider = Provider.of<WeatherForecastProvider>(context, listen: false);
 
     if(!forecastProvider.hasScrolledToIndex) {
       final int index = isHourly ? forecastProvider.currentHour! : forecastProvider.selectedDayIndex;
@@ -23,7 +22,7 @@ class WeatherForecastList extends ConsumerWidget {
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
-      // await forecastProvider.updateScrolledToIndex(true);
+
       ref.read(weatherForecastProvider.notifier).updateScrolledToIndex(true);
     }
   }
@@ -70,7 +69,6 @@ class WeatherForecastList extends ConsumerWidget {
   }
 
   Widget _buildListForecastItems(ScrollController controller, WidgetRef ref) {
-    // final forecastProvider = Provider.of<WeatherForecastProvider>(context);
     final forecastProvider = ref.watch(weatherForecastProvider);
 
     int listItemCount = isHourly 
