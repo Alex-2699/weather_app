@@ -57,10 +57,10 @@ class _BuildSuggestions extends ConsumerWidget {
   }
 
   void _navigateToHomeScreen(BuildContext context, String locationName) {
-    Navigator.of(context).pushAndRemoveUntil(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => HomeScreen(locationName: locationName)),
-      (route) => false,
     );
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   Widget _listViewSuggestions(BuildContext context, WidgetRef ref, SuggestionsResponse suggestions) {
