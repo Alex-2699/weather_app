@@ -8,11 +8,12 @@ import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class HomeScreen extends ConsumerWidget {
-  final String locationName;
 
-  const HomeScreen({super.key, required this.locationName});
+  const HomeScreen({super.key});
 
   Widget _buildDetailScreen(WidgetRef ref, WeatherResponse weatherData) {
+    final locationPropertiesProv = ref.watch(locationPropertiesProvider);
+
     return SafeArea(
       bottom: false,
       child: RefreshIndicator(
@@ -32,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
                 tempMin: weatherData.daily.tempMin[0],
               ),
               LocationWeather(
-                location: locationName,
+                location: locationPropertiesProv.placeName,
                 weatherDescription: WeatherData.weatherInterpretationCodes[weatherData.currentWeather.weatherCode]!,
               ),
               const WeatherForecastList(isHourly: true),
@@ -53,14 +54,15 @@ class HomeScreen extends ConsumerWidget {
         children: [
           GradientDecoration(),
           Align(alignment: Alignment.bottomCenter, child: MountainBackground()),
-          RequestStateEvaluator(
-            dataProvider: currentWeatherProvider, 
-            onDataHasLoaded: (data) => _buildDetailScreen(ref, data),
-          ).evaluateRequest(CustomProgressIndicator.staggeredDotsWave())
+          currentWeatherProvider.when(
+            data: (data) => _buildDetailScreen(ref, data), 
+            error: (error, stackTrace) => const ErrorScreen(),
+            loading: () => CustomProgressIndicator.staggeredDotsWave(),
+          ),
         ],
       ),
       floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: FABMenu(),
+      floatingActionButton: currentWeatherProvider.hasError ? null : FABMenu(),
     );
   }
 

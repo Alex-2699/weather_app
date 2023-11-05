@@ -4,11 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:weather_app/models/location_coordinates/location.dart';
 import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/screens/screens.dart';
 import 'package:weather_app/theme/app_theme.dart';
-import 'package:weather_app/utils/utils.dart';
+import 'package:weather_app/widgets/resources/error_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -25,26 +24,35 @@ class MyApp extends ConsumerWidget {
   Widget _getDefaultLocationInPreferences(WidgetRef ref) {
     final defaultLocationProv = ref.watch(getDefaultLocationProvider);
 
-    return RequestStateEvaluator(
-      dataProvider: defaultLocationProv,
-      onDataHasLoaded: (data) {
+    return defaultLocationProv.when(
+      data: (data) {
         if (data == null) return const SearchLocation();
-        
+
         return _navigateToHomeScreen(ref, defaultLocationProv);
       },
-    ).evaluateRequest(Container());
+      error: (error, stackTrace) => const HomeScreen(),
+      loading: () => const CircularProgressIndicator(),
+    );
   }
 
-  FutureBuilder<Location> _navigateToHomeScreen(WidgetRef ref, AsyncValue<List<String>?> defaultLocationProv) {
+  Widget _navigateToHomeScreen(WidgetRef ref, AsyncValue<List<String>?> defaultLocationProv) {
     final placeId = defaultLocationProv.asData!.value![0];
     final placeName = defaultLocationProv.asData!.value![1];
 
-    return FutureBuilder(
-      future: ref.read(getPlaceCordinatesProvider(placeId).future),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) return HomeScreen(locationName: placeName);
-        
-        return Container(color: Colors.amber);
+    final locationProperties = LocationProperties(placeId: placeId, placeName: placeName, isDefaultLocation: true);
+    Future<void>.microtask(() {
+      ref.read(locationPropertiesProvider.notifier).state = locationProperties;
+    });
+
+    return Consumer(
+      builder: (context, ref, child) {
+        final placeCoordinatesState = ref.watch(getPlaceCordinatesProvider(placeId));
+
+        return placeCoordinatesState.when(
+          data: (data) => const HomeScreen(),
+          loading: () => Container(color: Colors.amber),
+          error: (error, stackTrace) => const ErrorScreen(),
+        );
       },
     );
   }

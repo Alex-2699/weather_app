@@ -51,16 +51,27 @@ class _BuildSuggestions extends ConsumerWidget {
     final locationProperties = LocationProperties(placeId: place.placeId, placeName: place.description, isDefaultLocation: true);
 
     ref.read(locationPropertiesProvider.notifier).state = locationProperties;
-    await ref.read(getPlaceCordinatesProvider(place.placeId).future);
+
+    try {
+      await ref.read(getPlaceCordinatesProvider(place.placeId).future);
+      _navigateToHomeScreen(context, place.description);
+    } catch (error) {
+      _navigateToErrorScreen(context);
+    }
     
-    _navigateToHomeScreen(context, place.description);
   }
 
   void _navigateToHomeScreen(BuildContext context, String locationName) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => HomeScreen(locationName: locationName)),
+      MaterialPageRoute(builder: (context) => const HomeScreen()),
     );
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  void _navigateToErrorScreen(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const ErrorScreen(closeScreen: true)),
+    );
   }
 
   Widget _listViewSuggestions(BuildContext context, WidgetRef ref, SuggestionsResponse suggestions) {

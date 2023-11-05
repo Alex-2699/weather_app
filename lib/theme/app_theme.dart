@@ -37,6 +37,14 @@ class AppTheme {
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        elevation: 0,
+        backgroundColor: _darkMountain3,
+        foregroundColor: Colors.white,
+      ),
+    ),
   );
 
   Future<void> updateDarkModeValue(bool darkModeOn) async {
@@ -49,29 +57,53 @@ class AppTheme {
   ];
 
   TextStyle get textSizeSmall => TextStyle(
+    fontFamily: 'RedHatText',
     color: primaryTextColor,
+    fontWeight: FontWeight.w500,
     fontSize: 14.sp,
   );
 
   TextStyle get textSizeNormal => TextStyle(
+    fontFamily: 'RedHatText',
     color: primaryTextColor,
+    fontWeight: FontWeight.w400,
     fontSize: 18.sp,
   );
 
   TextStyle get textSizeLarge => TextStyle(
+    fontFamily: 'RedHatText',
     color: primaryTextColor,
+    fontWeight: FontWeight.w400,
     fontSize: 40.sp,
   );
 
   TextStyle get textSizeExtraLarge => TextStyle(
+    fontFamily: 'RedHatText',
     color: primaryTextColor,
+    fontWeight: FontWeight.w400,
     fontSize: 120.sp,
   );
 
   TextStyle get textSizeNormalBold => TextStyle(
+    fontFamily: 'RedHatText',
     color: primaryTextColor,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.w600,
     fontSize: 18.sp,
+  );
+
+
+  TextStyle get textTitleError => TextStyle(
+    color: _darkMountain4,
+    fontFamily: 'RedHatText', 
+    fontWeight: FontWeight.w800,
+    fontSize: 30.sp, 
+  );
+
+  TextStyle get textSubtitleError => TextStyle(
+    color: _darkMountain2,
+    fontFamily: 'RedHatText', 
+    fontWeight: FontWeight.w400,
+    fontSize: 17.sp, 
   );
 
   Color get primaryColor => _darkModeOn ? _darkPrimary : _lightPrimary;
