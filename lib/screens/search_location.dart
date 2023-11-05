@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:weather_app/models/models.dart';
 import 'package:weather_app/providers/providers.dart';
 
-import 'package:weather_app/screens/home_screen.dart';
+import 'package:weather_app/screens/current_weather_screen.dart';
 import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
@@ -54,16 +54,16 @@ class _BuildSuggestions extends ConsumerWidget {
 
     try {
       await ref.read(getPlaceCordinatesProvider(place.placeId).future);
-      _navigateToHomeScreen(context, place.description);
+      _navigateToCurrentWeatherScreen(context, place.description);
     } catch (error) {
       _navigateToErrorScreen(context);
     }
     
   }
 
-  void _navigateToHomeScreen(BuildContext context, String locationName) {
+  void _navigateToCurrentWeatherScreen(BuildContext context, String locationName) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      MaterialPageRoute(builder: (context) => const CurrentWeatherScreen()),
     );
     Navigator.of(context).popUntil((route) => route.isFirst);
   }

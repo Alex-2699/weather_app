@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:intl/date_symbol_data_local.dart';
 
 import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/screens/screens.dart';
 import 'package:weather_app/theme/app_theme.dart';
 import 'package:weather_app/widgets/resources/error_screen.dart';
 
+
 void main() async {
   await dotenv.load(fileName: ".env");
-  runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
-  );
+
+  initializeDateFormatting('es').then((_) {
+    runApp(
+      const ProviderScope(child: MyApp()),
+    );
+  });
+
 } 
 
 class MyApp extends ConsumerWidget {
@@ -28,14 +32,14 @@ class MyApp extends ConsumerWidget {
       data: (data) {
         if (data == null) return const SearchLocation();
 
-        return _navigateToHomeScreen(ref, defaultLocationProv);
+        return _navigateToCurrentWeatherScreen(ref, defaultLocationProv);
       },
-      error: (error, stackTrace) => const HomeScreen(),
+      error: (error, stackTrace) => const CurrentWeatherScreen(),
       loading: () => const CircularProgressIndicator(),
     );
   }
 
-  Widget _navigateToHomeScreen(WidgetRef ref, AsyncValue<List<String>?> defaultLocationProv) {
+  Widget _navigateToCurrentWeatherScreen(WidgetRef ref, AsyncValue<List<String>?> defaultLocationProv) {
     final placeId = defaultLocationProv.asData!.value![0];
     final placeName = defaultLocationProv.asData!.value![1];
 
@@ -49,7 +53,7 @@ class MyApp extends ConsumerWidget {
         final placeCoordinatesState = ref.watch(getPlaceCordinatesProvider(placeId));
 
         return placeCoordinatesState.when(
-          data: (data) => const HomeScreen(),
+          data: (data) => const CurrentWeatherScreen(),
           loading: () => Container(color: Colors.amber),
           error: (error, stackTrace) => const ErrorScreen(),
         );

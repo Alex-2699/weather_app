@@ -7,9 +7,9 @@ import 'package:weather_app/providers/providers.dart';
 import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
-class HomeScreen extends ConsumerWidget {
+class CurrentWeatherScreen extends ConsumerWidget {
 
-  const HomeScreen({super.key});
+  const CurrentWeatherScreen({super.key});
 
   Widget _buildDetailScreen(WidgetRef ref, WeatherResponse weatherData) {
     final locationPropertiesProv = ref.watch(locationPropertiesProvider);

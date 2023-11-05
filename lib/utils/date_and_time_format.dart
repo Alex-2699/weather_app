@@ -33,7 +33,7 @@ class DateAndTimeFormat {
   }
 
   static String formatDateTime(String date, String format) {
-    final DateFormat formatter = DateFormat(format);
+    final DateFormat formatter = DateFormat(format, 'es');
 
     return formatter.format(DateTime.parse(date));
   }
