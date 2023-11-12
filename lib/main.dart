@@ -11,7 +11,7 @@ import 'package:weather_app/theme/app_theme.dart';
 import 'package:weather_app/widgets/resources/error_screen.dart';
 
 
-void main() async {
+void main() async { 
   await dotenv.load(fileName: ".env");
 
   initializeDateFormatting('es').then((_) {
@@ -50,7 +50,7 @@ class MyApp extends ConsumerWidget {
 
     return Consumer(
       builder: (context, ref, child) {
-        final placeCoordinatesState = ref.watch(getPlaceCordinatesProvider(placeId));
+        final placeCoordinatesState = ref.watch(getPlaceCordinatesProviderLogin(placeId));
 
         return placeCoordinatesState.when(
           data: (data) => const CurrentWeatherScreen(),

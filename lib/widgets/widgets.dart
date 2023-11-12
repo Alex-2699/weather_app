@@ -10,4 +10,5 @@ export 'package:weather_app/widgets/scaffold_message.dart';
 export 'package:weather_app/widgets/suggestion_item.dart';
 export 'package:weather_app/widgets/weather_forecast.dart';
 export 'package:weather_app/widgets/expandable_fab_menu.dart';
+export 'package:weather_app/widgets/resources/empty_message.dart';
 export 'package:weather_app/widgets/resources/error_screen.dart';

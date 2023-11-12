@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:weather_app/providers/providers.dart';
 
-class AppBarCustom extends ConsumerWidget implements PreferredSizeWidget{
+class AppBarCustom extends StatelessWidget implements PreferredSizeWidget{
   
   final String title;
   final bool closeScreen;
@@ -16,11 +16,9 @@ class AppBarCustom extends ConsumerWidget implements PreferredSizeWidget{
   });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final appTheme = ref.watch(appThemeProvider);
-
+  Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title, style: TextStyle(color: appTheme.deepGray)),
+      title: Text(title),
       backgroundColor: ThemeData.light().scaffoldBackgroundColor,
       leading: const _CircleIcon(icon: Icons.location_on_rounded),
       leadingWidth: 100.w,

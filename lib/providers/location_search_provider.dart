@@ -22,3 +22,12 @@ final getPlaceCordinatesProvider = FutureProvider.family.autoDispose<Location, S
 
   return coordinates.result.geometry.location;
 });
+
+final getPlaceCordinatesProviderLogin = FutureProvider.family.autoDispose<Location, String>((ref, placeId) async {
+  final coordinates = await SearchLocationService.getLocationCoordinates(placeId);
+  ref.read(coordinatesProvider.notifier).state = coordinates.result.geometry.location;
+
+  ref.read(setDefaultLocationProvider(placeId));
+
+  return coordinates.result.geometry.location;
+});

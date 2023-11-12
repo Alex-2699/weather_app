@@ -16,13 +16,13 @@ class InputText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appTheme = ref.watch(appThemeProvider);
+    final appThemeProv = ref.watch(appThemeProvider);
 
-    BorderSide borderSide = BorderSide(color: appTheme.lightGray);
+    BorderSide borderSide = BorderSide(color: appThemeProv.lightGray);
     BorderRadius borderRadius = BorderRadius.circular(10);
 
     return TextField(
-      cursorColor: appTheme.darkGray,
+      cursorColor: appThemeProv.darkGray,
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
           borderSide: borderSide, 
@@ -34,11 +34,11 @@ class InputText extends ConsumerWidget {
         ),
         prefixIcon: Icon(
           prefixIcon,
-          color: appTheme.darkGray,
+          color: appThemeProv.darkGray,
         ),
         hintText: 'Ciudad',
         filled: true,
-        fillColor: appTheme.lightGray
+        fillColor: appThemeProv.lightGray
       ),
       onChanged: (value) => onChange(value),
     );

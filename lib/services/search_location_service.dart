@@ -11,9 +11,9 @@ class SearchLocationService {
     final completer = Completer<SuggestionsResponse>();
     String jsonData = '';
 
-    if (debounceTimer.isActive) debounceTimer.cancel();
+    //if (debounceTimer.isActive) debounceTimer.cancel();
     
-    debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+    //debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       jsonData = await ApiService.getJsonData(Environment.googleApiUrl, 'maps/api/place/autocomplete/json', {
         'key': Environment.googlePlacesApiKey ?? '',
         'input': locationName,
@@ -22,7 +22,7 @@ class SearchLocationService {
       });
 
       completer.complete(SuggestionsResponse.fromJson(jsonData));
-    });
+    //});
 
     return completer.future;
   }

@@ -4,9 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:weather_app/models/models.dart';
 import 'package:weather_app/providers/providers.dart';
-
 import 'package:weather_app/screens/current_weather_screen.dart';
-import 'package:weather_app/utils/utils.dart';
 import 'package:weather_app/widgets/widgets.dart';
 
 class SearchLocation extends ConsumerWidget {
@@ -57,8 +55,7 @@ class _BuildSuggestions extends ConsumerWidget {
       _navigateToCurrentWeatherScreen(context, place.description);
     } catch (error) {
       _navigateToErrorScreen(context);
-    }
-    
+    } 
   }
 
   void _navigateToCurrentWeatherScreen(BuildContext context, String locationName) {
@@ -75,7 +72,7 @@ class _BuildSuggestions extends ConsumerWidget {
   }
 
   Widget _listViewSuggestions(BuildContext context, WidgetRef ref, SuggestionsResponse suggestions) {
-    if(suggestions.predictions.isEmpty) return const Text('No hay resultados');
+    if(suggestions.predictions.isEmpty) return const EmptyOrErrorMessage(isError: false);
     
     return Expanded(
       child: ListView.separated(
@@ -94,13 +91,14 @@ class _BuildSuggestions extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locationName = ref.watch(locationNameProvider);
-    final suggestions = ref.watch(searchLocationProvider(locationName));
+    final suggestionsProv = ref.watch(searchLocationProvider(locationName));
 
     return Container(
-      child: RequestStateEvaluator(
-        dataProvider: suggestions,
-        onDataHasLoaded: (data) => _listViewSuggestions(context, ref, data),
-      ).evaluateRequest(CustomProgressIndicator.staggeredDotsWaveDark())
+      child: suggestionsProv.when(
+        data: (data) => _listViewSuggestions(context, ref, data), 
+        loading: () => CustomProgressIndicator.staggeredDotsWaveDark(),
+        error: (error, stackTrace) => const EmptyOrErrorMessage(isError: true), 
+      )
     );
   }
 

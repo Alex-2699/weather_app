@@ -16,6 +16,7 @@ class AppTheme {
 
   static const _lightGray = Color.fromRGBO(245, 245, 245, 1);
   static const _mediumGray = Color.fromRGBO(236, 236, 236, 1);
+  static const _gray = Color.fromRGBO(153, 162, 179, 1);
   static const _darkGray = Color.fromRGBO(88, 88, 88, 1);
   static const _deepGray = Color.fromRGBO(37, 37, 37, 1);
 
@@ -36,6 +37,7 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      foregroundColor: _darkGray,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -45,6 +47,13 @@ class AppTheme {
         foregroundColor: Colors.white,
       ),
     ),
+    textTheme: const TextTheme(
+      titleMedium: TextStyle(
+        fontFamily: 'RedHat',
+        color: _deepGray
+      ),
+    )
+
   );
 
   Future<void> updateDarkModeValue(bool darkModeOn) async {
@@ -70,6 +79,13 @@ class AppTheme {
     fontSize: 18.sp,
   );
 
+  TextStyle get textSizeNormalBold => TextStyle(
+    fontFamily: 'RedHatText',
+    color: primaryTextColor,
+    fontWeight: FontWeight.w600,
+    fontSize: 18.sp,
+  );
+  
   TextStyle get textSizeLarge => TextStyle(
     fontFamily: 'RedHatText',
     color: primaryTextColor,
@@ -84,19 +100,27 @@ class AppTheme {
     fontSize: 120.sp,
   );
 
-  TextStyle get textSizeNormalBold => TextStyle(
-    fontFamily: 'RedHatText',
-    color: primaryTextColor,
-    fontWeight: FontWeight.w600,
-    fontSize: 18.sp,
+
+  TextStyle get textNormalDeepDark => TextStyle(
+    color: _deepGray,
+    fontFamily: 'RedHatText', 
+    fontWeight: FontWeight.normal,
+    fontSize: 16.sp, 
+  );
+
+  TextStyle get textNormalDark => TextStyle(
+    color: _darkGray,
+    fontFamily: 'RedHatText', 
+    fontWeight: FontWeight.normal,
+    fontSize: 16.sp, 
   );
 
 
   TextStyle get textTitleError => TextStyle(
     color: _darkMountain4,
     fontFamily: 'RedHatText', 
-    fontWeight: FontWeight.w800,
-    fontSize: 30.sp, 
+    fontWeight: FontWeight.normal,
+    fontSize: 16.sp, 
   );
 
   TextStyle get textSubtitleError => TextStyle(
@@ -118,6 +142,7 @@ class AppTheme {
 
   Color get lightGray => _lightGray;
   Color get mediumGray => _mediumGray;
+  Color get gray => _gray;
   Color get darkGray => _darkGray;
   Color get deepGray => _deepGray;
 
