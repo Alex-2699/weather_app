@@ -74,12 +74,14 @@ class _RetryButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final appThemeProv = ref.watch(appThemeProvider);
+
     return SizedBox(
       height: 36.h,
       width: 110.w,
       child: ElevatedButton(
         onPressed: () => _onPressed(context, ref),
-        child: const Text('Reintentar', style: TextStyle(fontFamily: 'NunitoSans', fontWeight: FontWeight.w400)), // Define el texto del botón.
+        child: Text('Reintentar', style: appThemeProv.textTitleButton),
       ),
     );
   }

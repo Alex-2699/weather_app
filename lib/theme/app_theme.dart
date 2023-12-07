@@ -32,6 +32,8 @@ class AppTheme {
   static const _darkMountain4 = Color.fromRGBO(67, 75, 90, 1);
   static const _darkMountain5 = Color.fromRGBO(42, 50, 74, 1);
 
+  static const _fontFamily = 'NotoSansKhmer';
+
   ThemeData get globalTheme => ThemeData.light().copyWith(
     platform: TargetPlatform.iOS,
     appBarTheme: const AppBarTheme(
@@ -49,10 +51,11 @@ class AppTheme {
     ),
     textTheme: const TextTheme(
       titleMedium: TextStyle(
-        fontFamily: 'RedHat',
-        color: _deepGray
+        color: _deepGray,
+        fontFamily: _fontFamily,
+        fontWeight: FontWeight.normal
       ),
-    )
+    ),
 
   );
 
@@ -66,35 +69,35 @@ class AppTheme {
   ];
 
   TextStyle get textSizeSmall => TextStyle(
-    fontFamily: 'RedHatText',
+    fontFamily: _fontFamily,
     color: primaryTextColor,
     fontWeight: FontWeight.w500,
     fontSize: 14.sp,
   );
 
   TextStyle get textSizeNormal => TextStyle(
-    fontFamily: 'RedHatText',
+    fontFamily: _fontFamily,
     color: primaryTextColor,
     fontWeight: FontWeight.w400,
     fontSize: 18.sp,
   );
 
   TextStyle get textSizeNormalBold => TextStyle(
-    fontFamily: 'RedHatText',
+    fontFamily: _fontFamily,
     color: primaryTextColor,
     fontWeight: FontWeight.w600,
     fontSize: 18.sp,
   );
   
   TextStyle get textSizeLarge => TextStyle(
-    fontFamily: 'RedHatText',
+    fontFamily: _fontFamily,
     color: primaryTextColor,
     fontWeight: FontWeight.w400,
     fontSize: 40.sp,
   );
 
   TextStyle get textSizeExtraLarge => TextStyle(
-    fontFamily: 'RedHatText',
+    fontFamily: _fontFamily,
     color: primaryTextColor,
     fontWeight: FontWeight.w400,
     fontSize: 120.sp,
@@ -103,14 +106,14 @@ class AppTheme {
 
   TextStyle get textNormalDeepDark => TextStyle(
     color: _deepGray,
-    fontFamily: 'RedHatText', 
+    fontFamily: _fontFamily, 
     fontWeight: FontWeight.normal,
     fontSize: 16.sp, 
   );
 
   TextStyle get textNormalDark => TextStyle(
     color: _darkGray,
-    fontFamily: 'RedHatText', 
+    fontFamily: _fontFamily, 
     fontWeight: FontWeight.normal,
     fontSize: 16.sp, 
   );
@@ -118,16 +121,30 @@ class AppTheme {
 
   TextStyle get textTitleError => TextStyle(
     color: _darkMountain4,
-    fontFamily: 'RedHatText', 
-    fontWeight: FontWeight.normal,
-    fontSize: 16.sp, 
+    fontFamily: _fontFamily, 
+    fontWeight: FontWeight.w800,
+    fontSize: 30.sp, 
   );
 
   TextStyle get textSubtitleError => TextStyle(
     color: _darkMountain2,
-    fontFamily: 'RedHatText', 
+    fontFamily: _fontFamily, 
     fontWeight: FontWeight.w400,
     fontSize: 17.sp, 
+  );
+
+  TextStyle get textTitleButton => TextStyle(
+    fontFamily: _fontFamily,
+    color: primaryTextColor,
+    fontWeight: FontWeight.w400,
+    fontSize: 14.sp,
+  );
+
+  TextStyle get textSuggestion => TextStyle(
+    fontFamily: _fontFamily,
+    color: _darkGray,
+    fontWeight: FontWeight.w400,
+    fontSize: 14.sp,
   );
 
   Color get primaryColor => _darkModeOn ? _darkPrimary : _lightPrimary;

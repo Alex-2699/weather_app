@@ -18,8 +18,8 @@ class SuggestionItem extends ConsumerWidget {
     final appThemeProv = ref.watch(appThemeProvider);
 
     return ListTile(
-      leading: Icon(Icons.location_city_rounded, color: appThemeProv.gray),
-      title: Text(description),
+      leading: Icon(Icons.location_city_rounded, color: appThemeProv.darkGray),
+      title: Text(description, style: appThemeProv.textSuggestion),
       onTap: () => onTap(),
     );
   }
